@@ -17,14 +17,13 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
-    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/rooms", "/rooms/{id}", "/rooms/search",
-                    "/about", "/contact", "/register",
+                    "/about", "/contact", "/register", "/demo/**",
                     "/css/**", "/js/**", "/images/**", "/webjars/**",
                     "/h2-console/**").permitAll()
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
@@ -36,11 +35,6 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/", true)
                 .failureUrl("/login?error=true")
                 .permitAll()
-            )
-            .oauth2Login(oauth2 -> oauth2
-                .loginPage("/login")
-                .userInfoEndpoint(info -> info.userService(customOAuth2UserService))
-                .defaultSuccessUrl("/", true)
             )
             .logout(logout -> logout
                 .logoutUrl("/logout")
