@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Contact Us')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div th:replace="~{fragments/layout :: messages}"></div>
+
+<section class="page-header">
+    <div class="container">
+        <h1>Contact Us</h1>
+        <p>We'd love to hear from you</p>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-6">
+                <div class="card-custom p-4">
+                    <h3 class="mb-4">Send us a Message</h3>
+                    <form th:action="@{/contact}" th:object="${message}" method="post" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label class="form-label">Full Name *</label>
+                            <input type="text" class="form-control" th:field="*{name}" required>
+                            <div class="invalid-feedback">Please enter your name</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email Address *</label>
+                            <input type="email" class="form-control" th:field="*{email}" required>
+                            <div class="invalid-feedback">Please enter a valid email</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Subject *</label>
+                            <input type="text" class="form-control" th:field="*{subject}" required>
+                            <div class="invalid-feedback">Please enter a subject</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Message *</label>
+                            <textarea class="form-control" rows="5" th:field="*{message}" required></textarea>
+                            <div class="invalid-feedback">Please enter your message</div>
+                        </div>
+                        <button type="submit" class="btn btn-gold-custom">
+                            <i class="bi bi-send me-2"></i>Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h3 class="mb-4">Get in Touch</h3>
+                <div class="card-custom p-4 mb-3">
+                    <h5><i class="bi bi-geo-alt-fill text-warning me-2"></i>Address</h5>
+                    <p class="text-muted mb-0">Kajipara, Brainware University, Barasat, Kolkata</p>
+                </div>
+                <div class="card-custom p-4 mb-3">
+                    <h5><i class="bi bi-telephone-fill text-warning me-2"></i>Phone</h5>
+                    <p class="text-muted mb-0">+91 6295467048</p>
+                </div>
+                <div class="card-custom p-4 mb-3">
+                    <h5><i class="bi bi-envelope-fill text-warning me-2"></i>Email</h5>
+                    <p class="text-muted mb-0">ayushsarkarfkt@gmail.com</p>
+                </div>
+                <div class="card-custom p-4">
+                    <h5><i class="bi bi-clock-fill text-warning me-2"></i>Working Hours</h5>
+                    <p class="text-muted mb-0">24 Hours, 7 Days a Week</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

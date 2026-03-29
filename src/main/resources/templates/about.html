@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('About Us')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<section class="page-header">
+    <div class="container">
+        <h1>About Grand Horizon</h1>
+        <p>Where luxury meets comfort</p>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <h2 class="section-title">Our Story</h2>
+                <p class="mt-3">Grand Horizon Hotel has been a beacon of luxury hospitality since its founding. Nestled in the heart of the city, our hotel offers an unmatched blend of elegance, comfort, and world-class service.</p>
+                <p>Every room is thoughtfully designed to provide guests with a premium experience. From plush bedding and modern amenities to breathtaking views, we leave no detail overlooked.</p>
+                <p>Whether you're visiting for business or leisure, Grand Horizon ensures your stay is nothing short of extraordinary.</p>
+            </div>
+            <div class="col-lg-6">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="stat-card text-center gold">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Premium Rooms</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-card text-center blue">
+                            <div class="stat-number">10K+</div>
+                            <div class="stat-label">Happy Guests</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-card text-center green">
+                            <div class="stat-number">4.8</div>
+                            <div class="stat-label">Guest Rating</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-card text-center red">
+                            <div class="stat-number">24/7</div>
+                            <div class="stat-label">Support</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

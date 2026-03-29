@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Booking Summary')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<section class="page-header">
+    <div class="container">
+        <h1>Booking Summary</h1>
+        <p>Please review your booking details before confirming</p>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="summary-card">
+                    <h3 class="mb-4"><i class="bi bi-clipboard-check text-warning me-2"></i>Reservation Summary</h3>
+
+                    <div class="summary-row">
+                        <span>Room</span>
+                        <span th:text="'Room ' + ${room.roomNumber} + ' (' + ${room.roomType.displayName} + ')'">Room 101 (Suite)</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Check-in</span>
+                        <span th:text="${#temporals.format(checkIn, 'dd MMM yyyy')}">01 Jan 2026</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Check-out</span>
+                        <span th:text="${#temporals.format(checkOut, 'dd MMM yyyy')}">05 Jan 2026</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Duration</span>
+                        <span th:text="${nights} + ' night(s)'">4 nights</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Guests</span>
+                        <span th:text="${guests}">2</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Price per Night</span>
+                        <span>₹<span th:text="${room.pricePerNight}">5000</span></span>
+                    </div>
+                    <div class="summary-row" th:if="${specialRequests != null && !specialRequests.isEmpty()}">
+                        <span>Special Requests</span>
+                        <span th:text="${specialRequests}">None</span>
+                    </div>
+                    <div class="summary-row" style="font-size: 1.2rem;">
+                        <span>Total Amount</span>
+                        <span>₹<span th:text="${totalPrice}">20000</span></span>
+                    </div>
+
+                    <!-- Payment Method Selection -->
+                    <div class="mt-4 mb-3">
+                        <h5>Select Payment Method</h5>
+                    </div>
+                    <form th:action="@{/bookings/create}" method="post">
+                        <input type="hidden" name="roomId" th:value="${room.id}">
+                        <input type="hidden" name="checkIn" th:value="${checkIn}">
+                        <input type="hidden" name="checkOut" th:value="${checkOut}">
+                        <input type="hidden" name="guests" th:value="${guests}">
+                        <input type="hidden" name="specialRequests" th:value="${specialRequests}">
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6" th:each="method : ${paymentMethods}">
+                                <div class="form-check card-custom p-3">
+                                    <input class="form-check-input" type="radio" name="paymentMethod"
+                                           th:value="${method}" th:id="${method}" required
+                                           th:checked="${methodStat.first}">
+                                    <label class="form-check-label ms-2" th:for="${method}" th:text="${method.displayName}">
+                                        Credit Card
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-3">
+                            <button type="button" class="btn btn-outline-gold" onclick="history.back()">
+                                <i class="bi bi-arrow-left me-1"></i> Go Back
+                            </button>
+                            <button type="submit" class="btn btn-gold-custom flex-grow-1">
+                                <i class="bi bi-check-circle me-2"></i>Confirm & Pay ₹<span th:text="${totalPrice}">20000</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

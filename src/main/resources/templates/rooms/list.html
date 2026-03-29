@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Rooms')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div th:replace="~{fragments/layout :: messages}"></div>
+
+<section class="page-header">
+    <div class="container">
+        <h1>Our Rooms</h1>
+        <p>Find the perfect room for your stay across India</p>
+    </div>
+</section>
+
+<!-- Search Bar with City Filter -->
+<div class="container">
+    <div class="search-bar">
+        <form th:action="@{/rooms/search}" method="get" class="row g-3 align-items-end">
+            <div class="col-md-2">
+                <label class="form-label"><i class="bi bi-geo-alt-fill text-danger me-1"></i>City</label>
+                <select class="form-select" name="city">
+                    <option value="">All Cities</option>
+                    <option th:each="c : ${cities}" th:value="${c}" th:text="${c}"
+                            th:selected="${searchDto.city == c}">City</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Check-in</label>
+                <input type="date" class="form-control" name="checkIn" id="checkIn" th:value="${searchDto.checkIn}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Check-out</label>
+                <input type="date" class="form-control" name="checkOut" id="checkOut" th:value="${searchDto.checkOut}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Room Type</label>
+                <select class="form-select" name="roomType">
+                    <option value="">All Types</option>
+                    <option th:each="type : ${roomTypes}" th:value="${type}" th:text="${type.displayName}"
+                            th:selected="${searchDto.roomType == type}">Type</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Guests</label>
+                <input type="number" class="form-control" name="capacity" min="1" max="10"
+                       th:value="${searchDto.capacity}" placeholder="Any">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-gold-custom w-100">
+                    <i class="bi bi-search me-1"></i> Search
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Room Listings -->
+<section class="section-padding">
+    <div class="container">
+        <!-- Results Count -->
+        <div class="d-flex justify-content-between align-items-center mb-3" th:if="${!rooms.isEmpty()}">
+            <p class="text-muted mb-0"><span th:text="${rooms.size()}">5</span> rooms found</p>
+        </div>
+
+        <div class="row g-4" th:if="${!rooms.isEmpty()}">
+            <div class="col-md-6 col-lg-4" th:each="room : ${rooms}">
+                <div class="card card-custom h-100">
+                    <div class="card-img-wrapper">
+                        <img th:src="${room.imageUrl != null ? room.imageUrl : 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'}"
+                             class="card-img-top" th:alt="${room.roomType.displayName}">
+                        <span class="card-location-tag" th:if="${room.city != null}">
+                            <i class="bi bi-geo-alt-fill"></i> <span th:text="${room.city}">City</span>
+                        </span>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="room-type-badge" th:text="${room.roomType.displayName}">Type</span>
+                            <span class="text-muted small"><i class="bi bi-people"></i> <span th:text="${room.capacity}">2</span> Guests</span>
+                        </div>
+                        <h5 class="card-title" th:text="'Room ' + ${room.roomNumber}">Room 101</h5>
+                        <p class="location-text" th:if="${room.location != null}">
+                            <i class="bi bi-pin-map"></i> <span th:text="${room.location}">Location</span>
+                        </p>
+                        <p class="text-muted small flex-grow-1" th:text="${#strings.abbreviate(room.description, 100)}">Description</p>
+                        <div class="mb-2" th:if="${room.amenities != null}">
+                            <span class="amenity-tag" th:each="amenity : ${#strings.arraySplit(room.amenities, ',')}" th:text="${amenity.trim()}">WiFi</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-auto pt-2" style="border-top: 1px solid #eee;">
+                            <span class="price-tag">₹<span th:text="${room.pricePerNight}">5000</span> <small>/night</small></span>
+                            <a th:href="@{/rooms/{id}(id=${room.id})}" class="btn btn-primary-custom btn-sm">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:if="${rooms.isEmpty()}" class="text-center py-5">
+            <i class="bi bi-search" style="font-size: 3rem; color: #ccc;"></i>
+            <h4 class="mt-3">No rooms found</h4>
+            <p class="text-muted">Try adjusting your search filters or choose a different city</p>
+            <a th:href="@{/rooms}" class="btn btn-outline-gold">Clear Filters</a>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

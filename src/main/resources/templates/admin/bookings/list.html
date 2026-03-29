@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Manage Bookings')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div th:replace="~{fragments/layout :: messages}"></div>
+
+<section class="page-header">
+    <div class="container">
+        <h1>Booking Management</h1>
+        <p>View and manage all reservations</p>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="table-responsive" th:if="${!bookings.isEmpty()}">
+            <table class="table table-custom">
+                <thead>
+                    <tr><th>#</th><th>Guest</th><th>Email</th><th>Room</th><th>Check-in</th><th>Check-out</th><th>Total</th><th>Status</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    <tr th:each="booking : ${bookings}">
+                        <td th:text="${booking.id}">#1</td>
+                        <td th:text="${booking.user.name}">Guest</td>
+                        <td th:text="${booking.user.email}">email</td>
+                        <td th:text="'Room ' + ${booking.room.roomNumber}">Room 101</td>
+                        <td th:text="${#temporals.format(booking.checkInDate, 'dd MMM')}">01 Jan</td>
+                        <td th:text="${#temporals.format(booking.checkOutDate, 'dd MMM')}">05 Jan</td>
+                        <td>₹<span th:text="${booking.totalPrice}">20000</span></td>
+                        <td><span class="badge"
+                                  th:classappend="${booking.status.name() == 'PENDING'} ? 'badge-pending' :
+                                                   (${booking.status.name() == 'CONFIRMED'} ? 'badge-confirmed' :
+                                                   (${booking.status.name() == 'CANCELLED'} ? 'badge-cancelled' : 'badge-completed'))"
+                                  th:text="${booking.status.displayName}">Status</span></td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                    Update
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <form th:action="@{/admin/bookings/{id}/status(id=${booking.id})}" method="post">
+                                            <input type="hidden" name="status" value="CONFIRMED">
+                                            <button type="submit" class="dropdown-item text-success">✓ Confirm</button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form th:action="@{/admin/bookings/{id}/status(id=${booking.id})}" method="post">
+                                            <input type="hidden" name="status" value="COMPLETED">
+                                            <button type="submit" class="dropdown-item text-primary">✓ Complete</button>
+                                        </form>
+                                    </li>
+                                    <li>
+                                        <form th:action="@{/admin/bookings/{id}/status(id=${booking.id})}" method="post">
+                                            <input type="hidden" name="status" value="CANCELLED">
+                                            <button type="submit" class="dropdown-item text-danger">✗ Cancel</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${bookings.isEmpty()}" class="text-center py-5">
+            <p class="text-muted">No bookings found.</p>
+        </div>
+        <a th:href="@{/admin/dashboard}" class="btn btn-outline-gold mt-3"><i class="bi bi-arrow-left me-1"></i> Back to Dashboard</a>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

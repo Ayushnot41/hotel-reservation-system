@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Messages')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<section class="page-header">
+    <div class="container">
+        <h1>Contact Messages</h1>
+        <p>Messages from guests and visitors</p>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div th:if="${!messages.isEmpty()}">
+            <div class="row g-3">
+                <div class="col-12" th:each="msg : ${messages}">
+                    <div class="card-custom p-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <div>
+                                <strong th:text="${msg.name}">Name</strong>
+                                <span class="text-muted ms-2" th:text="${msg.email}">email</span>
+                            </div>
+                            <small class="text-muted" th:text="${#temporals.format(msg.createdAt, 'dd MMM yyyy HH:mm')}">Date</small>
+                        </div>
+                        <h6 th:text="${msg.subject}">Subject</h6>
+                        <p class="text-muted mb-0" th:text="${msg.message}">Message body</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:if="${messages.isEmpty()}" class="text-center py-5">
+            <p class="text-muted">No messages yet.</p>
+        </div>
+        <a th:href="@{/admin/dashboard}" class="btn btn-outline-gold mt-3"><i class="bi bi-arrow-left me-1"></i> Back to Dashboard</a>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Home')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div th:replace="~{fragments/layout :: messages}"></div>
+
+<!-- Hero Section with Real Background Image -->
+<section class="hero-section-v2">
+    <div class="hero-overlay"></div>
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row">
+            <div class="col-lg-8 mx-auto text-center animate-in">
+                <h1 class="hero-title-v2">Your Perfect Stay <span>Awaits</span></h1>
+                <p class="hero-subtitle-v2">Search from 1000+ hotels across India at the best prices</p>
+            </div>
+        </div>
+        <!-- GoIbibo-style Search Box -->
+        <div class="row mt-4">
+            <div class="col-lg-10 mx-auto">
+                <div class="search-box-v2">
+                    <form th:action="@{/rooms/search}" method="get" class="row g-2 align-items-end">
+                        <div class="col-md-3">
+                            <label class="search-label"><i class="bi bi-geo-alt-fill text-danger"></i> City</label>
+                            <select class="form-select search-input" name="city" id="citySelect">
+                                <option value="">All Cities</option>
+                                <option th:each="c : ${cities}" th:value="${c}" th:text="${c}">City</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="search-label"><i class="bi bi-calendar-event"></i> Check-in</label>
+                            <input type="date" class="form-control search-input" name="checkIn" id="heroCheckIn">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="search-label"><i class="bi bi-calendar-check"></i> Check-out</label>
+                            <input type="date" class="form-control search-input" name="checkOut" id="heroCheckOut">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="search-label"><i class="bi bi-people-fill"></i> Guests</label>
+                            <select class="form-select search-input" name="capacity">
+                                <option value="">Any</option>
+                                <option value="1">1 Guest</option>
+                                <option value="2">2 Guests</option>
+                                <option value="3">3 Guests</option>
+                                <option value="4">4+ Guests</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-search-v2 w-100">
+                                <i class="bi bi-search me-2"></i>Search Hotels
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Stats Bar -->
+<section class="stats-bar">
+    <div class="container">
+        <div class="row text-center g-3">
+            <div class="col-6 col-md-3">
+                <div class="quick-stat">
+                    <div class="quick-stat-number">500+</div>
+                    <div class="quick-stat-label">Hotels</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="quick-stat">
+                    <div class="quick-stat-number">50K+</div>
+                    <div class="quick-stat-label">Happy Guests</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="quick-stat">
+                    <div class="quick-stat-number">100+</div>
+                    <div class="quick-stat-label">Cities</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="quick-stat">
+                    <div class="quick-stat-number">4.8★</div>
+                    <div class="quick-stat-label">Rating</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Destinations GoIbibo Style -->
+<section class="section-padding">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="section-title mb-1">Popular Destinations</h2>
+                <p class="section-subtitle mb-0">Explore top-rated hotels in trending cities</p>
+            </div>
+            <a th:href="@{/rooms}" class="btn btn-outline-gold d-none d-md-inline-block">View All <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="row g-3">
+            <div class="col-6 col-md-4 col-lg-2">
+                <a th:href="@{/rooms/search(city='Mumbai')}" class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=400&h=300&fit=crop" alt="Mumbai">
+                    <div class="destination-overlay">
+                        <h5>Mumbai</h5>
+                        <span>From ₹2,500</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a th:href="@{/rooms/search(city='Delhi')}" class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1587474260584-136574528ed5?w=400&h=300&fit=crop" alt="Delhi">
+                    <div class="destination-overlay">
+                        <h5>Delhi</h5>
+                        <span>From ₹4,500</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a th:href="@{/rooms/search(city='Goa')}" class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=400&h=300&fit=crop" alt="Goa">
+                    <div class="destination-overlay">
+                        <h5>Goa</h5>
+                        <span>From ₹7,500</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a th:href="@{/rooms/search(city='Jaipur')}" class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1599661046289-e31897846e41?w=400&h=300&fit=crop" alt="Jaipur">
+                    <div class="destination-overlay">
+                        <h5>Jaipur</h5>
+                        <span>From ₹12,000</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a th:href="@{/rooms/search(city='Udaipur')}" class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=400&h=300&fit=crop" alt="Udaipur">
+                    <div class="destination-overlay">
+                        <h5>Udaipur</h5>
+                        <span>From ₹15,000</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a th:href="@{/rooms/search(city='Bangalore')}" class="destination-card">
+                    <img src="https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=400&h=300&fit=crop" alt="Bangalore">
+                    <div class="destination-overlay">
+                        <h5>Bangalore</h5>
+                        <span>From ₹5,500</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Special Offers Banner like GoIbibo -->
+<section class="offers-section">
+    <div class="container">
+        <h2 class="section-title text-white mb-4"><i class="bi bi-tag-fill me-2"></i>Today's Best Deals</h2>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="offer-card">
+                    <div class="offer-badge">FLAT 30% OFF</div>
+                    <h5>First Booking Discount</h5>
+                    <p>Sign up and get flat 30% off on your first hotel booking. Use code: <strong>FIRST30</strong></p>
+                    <a th:href="@{/register}" class="btn btn-sm btn-offer">Book Now</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="offer-card">
+                    <div class="offer-badge hot">HOT DEAL</div>
+                    <h5>Weekend Getaway</h5>
+                    <p>Up to 40% off on weekend stays in Goa, Udaipur & Jaipur. Limited period offer!</p>
+                    <a th:href="@{/rooms/search(city='Goa')}" class="btn btn-sm btn-offer">Explore</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="offer-card">
+                    <div class="offer-badge">FREE BREAKFAST</div>
+                    <h5>Deluxe Room Special</h5>
+                    <p>Book any Deluxe or Suite room and get complimentary breakfast for your entire stay.</p>
+                    <a th:href="@{/rooms}" class="btn btn-sm btn-offer">View Rooms</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="section-padding">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Why Travellers Love Us</h2>
+            <p class="section-subtitle">Trusted by thousands of travellers across India</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-3 col-6">
+                <div class="feature-card-v2 text-center">
+                    <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                    <h5>Secure Booking</h5>
+                    <p>100% secure payment with instant confirmation</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="feature-card-v2 text-center">
+                    <div class="feature-icon green"><i class="bi bi-cash-stack"></i></div>
+                    <h5>Best Price</h5>
+                    <p>Price match guarantee on every booking</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="feature-card-v2 text-center">
+                    <div class="feature-icon blue"><i class="bi bi-headset"></i></div>
+                    <h5>24/7 Support</h5>
+                    <p>Round-the-clock customer assistance</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="feature-card-v2 text-center">
+                    <div class="feature-icon red"><i class="bi bi-x-circle"></i></div>
+                    <h5>Free Cancellation</h5>
+                    <p>Cancel anytime with zero charges</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Rooms -->
+<section class="section-padding" style="background-color: #fff;">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="section-title mb-1">Featured Rooms</h2>
+                <p class="section-subtitle mb-0">Handpicked accommodations for the discerning traveller</p>
+            </div>
+            <a th:href="@{/rooms}" class="btn btn-outline-gold d-none d-md-inline-block">View All <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4" th:each="room : ${featuredRooms}">
+                <div class="card card-custom h-100">
+                    <div class="card-img-wrapper">
+                        <img th:src="${room.imageUrl != null ? room.imageUrl : 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'}"
+                             class="card-img-top" th:alt="${room.roomType.displayName}">
+                        <span class="card-location-tag" th:if="${room.city != null}">
+                            <i class="bi bi-geo-alt-fill"></i> <span th:text="${room.city}">City</span>
+                        </span>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="room-type-badge" th:text="${room.roomType.displayName}">Suite</span>
+                            <span class="text-muted small"><i class="bi bi-people"></i> <span th:text="${room.capacity}">2</span> Guests</span>
+                        </div>
+                        <h5 class="card-title" th:text="'Room ' + ${room.roomNumber}">Room 101</h5>
+                        <p class="text-muted small" th:if="${room.location != null}">
+                            <i class="bi bi-pin-map me-1"></i><span th:text="${room.location}">Location</span>
+                        </p>
+                        <p class="text-muted small flex-grow-1" th:text="${#strings.abbreviate(room.description, 80)}">Description</p>
+                        <div class="d-flex justify-content-between align-items-center mt-auto pt-2" style="border-top: 1px solid #eee;">
+                            <span class="price-tag">₹<span th:text="${room.pricePerNight}">5000</span> <small>/night</small></span>
+                            <a th:href="@{/rooms/{id}(id=${room.id})}" class="btn btn-primary-custom btn-sm">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4 d-md-none">
+            <a th:href="@{/rooms}" class="btn btn-outline-gold">View All Rooms <i class="bi bi-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+
+<script>
+    // Set minimum date for check-in/check-out
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        const heroCheckIn = document.getElementById('heroCheckIn');
+        const heroCheckOut = document.getElementById('heroCheckOut');
+        if (heroCheckIn) {
+            heroCheckIn.setAttribute('min', today);
+            heroCheckIn.addEventListener('change', function() {
+                heroCheckOut.setAttribute('min', this.value);
+            });
+        }
+    });
+</script>
+</body>
+</html>

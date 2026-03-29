@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/layout :: head('Room Details')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div th:replace="~{fragments/layout :: messages}"></div>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-7">
+                <img th:src="${room.imageUrl != null ? room.imageUrl : 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'}"
+                     class="img-fluid rounded shadow" style="width: 100%; max-height: 450px; object-fit: cover;"
+                     th:alt="${room.roomType.displayName}">
+            </div>
+            <div class="col-lg-5">
+                <span class="room-type-badge mb-3" th:text="${room.roomType.displayName}">Suite</span>
+                <h1 class="mt-2" th:text="'Room ' + ${room.roomNumber}">Room 101</h1>
+                <p class="text-muted mt-3" th:text="${room.description}">Description</p>
+
+                <div class="d-flex gap-3 my-3">
+                    <div><i class="bi bi-people-fill text-warning"></i> <strong th:text="${room.capacity}">2</strong> Guests</div>
+                    <div><i class="bi bi-check-circle-fill text-success" th:if="${room.available}"></i>
+                        <span th:if="${room.available}" class="text-success">Available</span>
+                        <span th:unless="${room.available}" class="text-danger">Unavailable</span>
+                    </div>
+                </div>
+
+                <div class="mb-3" th:if="${room.amenities != null}">
+                    <h6>Amenities</h6>
+                    <span class="amenity-tag" th:each="amenity : ${room.amenities.split(',')}" th:text="${amenity.trim()}">WiFi</span>
+                </div>
+
+                <div class="summary-card mt-4">
+                    <div class="price-tag mb-3" style="font-size: 1.8rem;">
+                        ₹<span th:text="${room.pricePerNight}">5000</span> <small style="font-size: 0.9rem;">/ night</small>
+                    </div>
+
+                    <div sec:authorize="isAuthenticated()">
+                        <a th:href="@{/bookings/new(roomId=${room.id})}"
+                           class="btn btn-gold-custom btn-lg w-100" th:if="${room.available}">
+                            <i class="bi bi-calendar-check me-2"></i>Book Now
+                        </a>
+                    </div>
+                    <div sec:authorize="!isAuthenticated()">
+                        <a th:href="@{/login}" class="btn btn-primary-custom btn-lg w-100">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Login to Book
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a th:href="@{/rooms}" class="btn btn-outline-gold"><i class="bi bi-arrow-left me-1"></i> Back to Rooms</a>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

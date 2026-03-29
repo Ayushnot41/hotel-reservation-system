@@ -1,0 +1,550 @@
+/* =============================================
+   Hotel Reservation System - Premium GoIbibo Style
+   Color Palette:
+   - Primary Gold: #D4AF37
+   - Deep Blue: #1B3A5C
+   - Dark Charcoal: #2C2C2C
+   - Light Gray BG: #F5F5F5
+   - White: #FFFFFF
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --gold: #D4AF37;
+    --gold-light: #E8D48B;
+    --gold-dark: #B8960C;
+    --blue: #1B3A5C;
+    --blue-light: #2A5A8C;
+    --blue-dark: #0F2440;
+    --charcoal: #2C2C2C;
+    --gray-light: #F5F5F5;
+    --gray-medium: #E0E0E0;
+    --gray-text: #6C757D;
+    --white: #FFFFFF;
+    --success: #28A745;
+    --danger: #DC3545;
+    --warning: #FFC107;
+    --shadow: 0 2px 15px rgba(0,0,0,0.08);
+    --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
+    --transition: all 0.3s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--charcoal);
+    background-color: var(--gray-light);
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Playfair Display', serif;
+    color: var(--blue-dark);
+}
+
+a { color: var(--blue); text-decoration: none; transition: var(--transition); }
+a:hover { color: var(--gold); }
+
+/* ===== Navbar ===== */
+.navbar-custom {
+    background-color: var(--white);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    padding: 0.8rem 0;
+    border-bottom: 2px solid var(--gold);
+}
+.navbar-custom .navbar-brand {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700; font-size: 1.5rem; color: var(--blue-dark);
+}
+.navbar-custom .navbar-brand span { color: var(--gold); }
+.navbar-custom .nav-link {
+    color: var(--charcoal); font-weight: 500; padding: 0.5rem 1rem;
+    transition: var(--transition); font-size: 0.95rem;
+}
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link.active { color: var(--gold); }
+.navbar-custom .btn-gold {
+    background-color: var(--gold); color: var(--white); border: none;
+    padding: 0.5rem 1.5rem; border-radius: 5px; font-weight: 600;
+    transition: var(--transition);
+}
+.navbar-custom .btn-gold:hover {
+    background-color: var(--gold-dark); color: var(--white); transform: translateY(-1px);
+}
+
+/* ===== Hero Section V2 - GoIbibo Style ===== */
+.hero-section-v2 {
+    position: relative;
+    min-height: 520px;
+    background: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1920&q=80') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    padding: 3rem 0;
+}
+.hero-overlay {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, rgba(15,36,64,0.85) 0%, rgba(27,58,92,0.75) 50%, rgba(42,90,140,0.65) 100%);
+}
+.hero-title-v2 {
+    font-size: 3.2rem; font-weight: 700; color: var(--white);
+    margin-bottom: 0.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+.hero-title-v2 span { color: var(--gold); }
+.hero-subtitle-v2 {
+    font-size: 1.15rem; color: rgba(255,255,255,0.85);
+    font-family: 'Inter', sans-serif; margin-bottom: 0;
+}
+
+/* ===== Search Box V2 ===== */
+.search-box-v2 {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    border-top: 3px solid var(--gold);
+}
+.search-label {
+    font-size: 0.78rem; font-weight: 600; color: var(--charcoal);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.3rem;
+    display: block;
+}
+.search-input {
+    border: 1px solid var(--gray-medium); border-radius: 6px;
+    padding: 0.55rem 0.75rem; font-size: 0.9rem;
+}
+.search-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212,175,55,0.15);
+}
+.btn-search-v2 {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    color: var(--white); border: none; border-radius: 6px;
+    padding: 0.65rem 1.5rem; font-weight: 600; font-size: 0.95rem;
+    transition: var(--transition); text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.btn-search-v2:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(212,175,55,0.4);
+    color: var(--white);
+}
+
+/* ===== Stats Bar ===== */
+.stats-bar {
+    background: var(--white);
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--gray-medium);
+}
+.quick-stat { padding: 0.5rem; }
+.quick-stat-number {
+    font-size: 1.5rem; font-weight: 700; color: var(--blue-dark);
+    font-family: 'Playfair Display', serif;
+}
+.quick-stat-label {
+    font-size: 0.8rem; color: var(--gray-text);
+    text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ===== Destination Cards ===== */
+.destination-card {
+    display: block; position: relative; border-radius: 12px;
+    overflow: hidden; height: 200px; transition: var(--transition);
+}
+.destination-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+.destination-card img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: var(--transition);
+}
+.destination-card:hover img { transform: scale(1.1); }
+.destination-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 1rem;
+    background: linear-gradient(transparent, rgba(0,0,0,0.75));
+    color: var(--white);
+}
+.destination-overlay h5 {
+    color: var(--white); font-size: 1rem; margin-bottom: 0.1rem;
+}
+.destination-overlay span {
+    font-size: 0.8rem; color: var(--gold-light);
+    font-weight: 600;
+}
+
+/* ===== Offers Section ===== */
+.offers-section {
+    background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 100%);
+    padding: 3.5rem 0;
+}
+.offer-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px; padding: 1.5rem;
+    color: var(--white);
+    backdrop-filter: blur(10px);
+    transition: var(--transition);
+    height: 100%;
+}
+.offer-card:hover {
+    background: rgba(255,255,255,0.12);
+    transform: translateY(-3px);
+}
+.offer-card h5 { color: var(--white); font-size: 1.1rem; margin-bottom: 0.5rem; }
+.offer-card p { font-size: 0.9rem; opacity: 0.85; margin-bottom: 1rem; }
+.offer-badge {
+    display: inline-block;
+    background: var(--gold); color: var(--blue-dark);
+    padding: 0.2rem 0.7rem; border-radius: 4px;
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.5px; margin-bottom: 0.8rem;
+}
+.offer-badge.hot { background: #FF4757; color: white; }
+.btn-offer {
+    background: rgba(255,255,255,0.15); color: var(--white);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 6px; font-weight: 600; padding: 0.4rem 1.2rem;
+    transition: var(--transition);
+}
+.btn-offer:hover {
+    background: var(--gold); color: var(--blue-dark);
+    border-color: var(--gold);
+}
+
+/* ===== Feature Cards V2 ===== */
+.feature-card-v2 {
+    background: var(--white); border-radius: 12px;
+    padding: 2rem 1.5rem; box-shadow: var(--shadow);
+    transition: var(--transition); height: 100%;
+}
+.feature-card-v2:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+.feature-card-v2 h5 { font-size: 1rem; margin-bottom: 0.5rem; }
+.feature-card-v2 p { font-size: 0.85rem; color: var(--gray-text); margin-bottom: 0; }
+.feature-icon {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: rgba(212,175,55,0.12); color: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; margin: 0 auto 1rem;
+}
+.feature-icon.green { background: rgba(40,167,69,0.12); color: var(--success); }
+.feature-icon.blue { background: rgba(27,58,92,0.12); color: var(--blue); }
+.feature-icon.red { background: rgba(220,53,69,0.12); color: var(--danger); }
+
+/* ===== Card Location Tag ===== */
+.card-img-wrapper {
+    position: relative; overflow: hidden;
+}
+.card-img-wrapper .card-img-top {
+    transition: var(--transition);
+}
+.card-custom:hover .card-img-wrapper .card-img-top {
+    transform: scale(1.05);
+}
+.card-location-tag {
+    position: absolute; top: 10px; left: 10px;
+    background: rgba(0,0,0,0.6); color: var(--white);
+    padding: 0.2rem 0.6rem; border-radius: 4px;
+    font-size: 0.75rem; font-weight: 500;
+    backdrop-filter: blur(5px);
+}
+.location-text {
+    font-size: 0.8rem; color: var(--gray-text); margin-bottom: 0.3rem;
+}
+
+/* ===== CTA Section ===== */
+.cta-section {
+    background: linear-gradient(135deg, #0D1B2A, var(--blue));
+    padding: 3rem 0;
+}
+.btn-app {
+    background: rgba(255,255,255,0.1); color: var(--white);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px; padding: 0.6rem 1.5rem;
+    font-weight: 600; transition: var(--transition);
+}
+.btn-app:hover {
+    background: var(--white); color: var(--blue-dark);
+}
+.app-mockup {
+    color: var(--white); opacity: 0.4;
+}
+
+/* ===== Auth Pages V2 ===== */
+.auth-wrapper {
+    min-height: 80vh; display: flex; align-items: center;
+    justify-content: center; padding: 2rem;
+    background: linear-gradient(135deg, var(--gray-light) 0%, #E8E3D9 100%);
+}
+.auth-card-v2 {
+    background: var(--white); border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    padding: 2.5rem; width: 100%; max-width: 450px;
+    border-top: 4px solid var(--gold);
+}
+.auth-card-v2 h2 {
+    text-align: center; margin-bottom: 0.3rem; font-size: 1.8rem;
+}
+.auth-subtitle {
+    text-align: center; color: var(--gray-text);
+    margin-bottom: 1.5rem; font-size: 0.9rem;
+}
+.auth-logo {
+    text-align: center; margin-bottom: 1rem;
+    font-size: 2.5rem; color: var(--gold);
+}
+
+/* ===== Social Login ===== */
+.social-login-section {
+    display: flex; flex-direction: column; gap: 0.6rem;
+    margin-bottom: 1rem;
+}
+.btn-social {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0.6rem; padding: 0.7rem 1rem; border-radius: 8px;
+    font-weight: 500; font-size: 0.9rem; transition: var(--transition);
+    border: 1px solid var(--gray-medium); color: var(--charcoal);
+    background: var(--white);
+}
+.btn-social:hover {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+    color: var(--charcoal);
+}
+.btn-google { border-color: #E0E0E0; }
+.btn-google:hover { border-color: #4285F4; }
+.btn-apple {
+    background: #000; color: var(--white); border-color: #000;
+}
+.btn-apple:hover {
+    background: #1a1a1a; color: var(--white);
+}
+.divider-text {
+    text-align: center; position: relative;
+    margin: 1.2rem 0;
+}
+.divider-text::before {
+    content: ''; position: absolute; top: 50%; left: 0; right: 0;
+    height: 1px; background: var(--gray-medium);
+}
+.divider-text span {
+    background: var(--white); padding: 0 1rem;
+    position: relative; z-index: 1;
+    color: var(--gray-text); font-size: 0.8rem; text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ===== Buttons ===== */
+.btn-primary-custom {
+    background-color: var(--blue); color: var(--white); border: none;
+    padding: 0.6rem 1.5rem; border-radius: 5px; font-weight: 600;
+    transition: var(--transition);
+}
+.btn-primary-custom:hover {
+    background-color: var(--blue-dark); color: var(--white); transform: translateY(-1px);
+}
+.btn-gold-custom {
+    background-color: var(--gold); color: var(--white); border: none;
+    padding: 0.6rem 1.5rem; border-radius: 5px; font-weight: 600;
+    transition: var(--transition);
+}
+.btn-gold-custom:hover {
+    background-color: var(--gold-dark); color: var(--white); transform: translateY(-1px);
+}
+.btn-outline-gold {
+    border: 2px solid var(--gold); color: var(--gold);
+    padding: 0.5rem 1.5rem; border-radius: 5px; font-weight: 600;
+    background: transparent; transition: var(--transition);
+}
+.btn-outline-gold:hover { background-color: var(--gold); color: var(--white); }
+
+/* ===== Cards ===== */
+.card-custom {
+    background: var(--white); border: none; border-radius: 10px;
+    box-shadow: var(--shadow); transition: var(--transition); overflow: hidden;
+}
+.card-custom:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); }
+.card-custom .card-img-top { height: 220px; object-fit: cover; }
+.card-custom .card-body { padding: 1.5rem; }
+.card-custom .card-title {
+    font-family: 'Playfair Display', serif; font-weight: 600;
+    color: var(--blue-dark); margin-bottom: 0.3rem;
+}
+.card-custom .price-tag { font-size: 1.3rem; font-weight: 700; color: var(--gold-dark); }
+.card-custom .price-tag small { font-size: 0.8rem; font-weight: 400; color: var(--gray-text); }
+
+/* ===== Section Styling ===== */
+.section-title { font-size: 2rem; font-weight: 700; color: var(--blue-dark); margin-bottom: 0.5rem; }
+.section-subtitle { color: var(--gray-text); margin-bottom: 2.5rem; font-size: 1.05rem; }
+.section-padding { padding: 3.5rem 0; }
+
+/* ===== Room Badge ===== */
+.room-type-badge {
+    display: inline-block; background-color: var(--blue);
+    color: var(--white); padding: 0.25rem 0.75rem;
+    border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ===== Amenity Tags ===== */
+.amenity-tag {
+    display: inline-block; background-color: var(--gray-light);
+    color: var(--charcoal); padding: 0.3rem 0.8rem;
+    border-radius: 20px; font-size: 0.75rem; margin: 0.15rem;
+    border: 1px solid var(--gray-medium);
+}
+
+/* ===== Forms ===== */
+.form-control:focus, .form-select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 0.2rem rgba(212,175,55,0.2);
+}
+.form-label { font-weight: 500; color: var(--charcoal); margin-bottom: 0.4rem; }
+.input-group-text {
+    background: var(--gray-light); border-color: var(--gray-medium);
+    color: var(--gray-text);
+}
+
+/* ===== Stats Cards (Admin) ===== */
+.stat-card {
+    background: var(--white); border-radius: 10px; padding: 1.5rem;
+    box-shadow: var(--shadow); border-left: 4px solid var(--gold);
+    transition: var(--transition);
+}
+.stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+.stat-card .stat-number { font-size: 2rem; font-weight: 700; color: var(--blue-dark); }
+.stat-card .stat-label {
+    color: var(--gray-text); font-size: 0.9rem;
+    text-transform: uppercase; letter-spacing: 0.5px;
+}
+.stat-card.blue { border-left-color: var(--blue); }
+.stat-card.green { border-left-color: var(--success); }
+.stat-card.red { border-left-color: var(--danger); }
+.stat-card.gold { border-left-color: var(--gold); }
+
+/* ===== Tables ===== */
+.table-custom { background: var(--white); border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); }
+.table-custom thead { background-color: var(--blue); color: var(--white); }
+.table-custom thead th {
+    font-weight: 600; padding: 0.9rem 1rem; border: none;
+    font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.3px;
+}
+.table-custom tbody td { padding: 0.8rem 1rem; vertical-align: middle; border-bottom: 1px solid var(--gray-medium); }
+
+/* ===== Status Badges ===== */
+.badge-pending { background-color: var(--warning); color: var(--charcoal); }
+.badge-confirmed { background-color: var(--success); }
+.badge-cancelled { background-color: var(--danger); }
+.badge-completed { background-color: var(--blue); }
+
+/* ===== Footer ===== */
+.footer {
+    background-color: var(--blue-dark); color: rgba(255,255,255,0.8); padding: 3rem 0 1.5rem;
+}
+.footer h5 { color: var(--gold); font-family: 'Playfair Display', serif; margin-bottom: 1rem; }
+.footer a {
+    color: rgba(255,255,255,0.7); display: block;
+    padding: 0.2rem 0; transition: var(--transition);
+}
+.footer a:hover { color: var(--gold); padding-left: 5px; }
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 1.5rem; margin-top: 2rem;
+    text-align: center; font-size: 0.9rem;
+}
+
+/* ===== Page Header ===== */
+.page-header {
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue));
+    color: var(--white); padding: 3rem 0;
+}
+.page-header h1 { color: var(--white); font-size: 2.2rem; }
+.page-header p { opacity: 0.85; }
+
+/* ===== Search Filter Bar ===== */
+.search-bar {
+    background: var(--white); border-radius: 10px;
+    padding: 1.5rem; box-shadow: var(--shadow);
+    margin-top: -2rem; position: relative; z-index: 10;
+}
+
+/* ===== Error Pages ===== */
+.error-page {
+    min-height: 70vh; display: flex; align-items: center;
+    justify-content: center; text-align: center;
+}
+.error-page .error-code {
+    font-size: 6rem; font-weight: 700; color: var(--gold);
+    font-family: 'Playfair Display', serif;
+}
+.error-page p { font-size: 1.2rem; color: var(--gray-text); }
+
+/* ===== Dashboard Welcome ===== */
+.welcome-card {
+    background: linear-gradient(135deg, var(--blue-dark), var(--blue-light));
+    color: var(--white); border-radius: 12px; padding: 2rem; margin-bottom: 2rem;
+}
+.welcome-card h2 { color: var(--white); }
+
+/* ===== Booking Summary ===== */
+.summary-card {
+    background: var(--white); border-radius: 12px;
+    box-shadow: var(--shadow); padding: 2rem;
+    border-top: 4px solid var(--gold);
+}
+.summary-card .summary-row {
+    display: flex; justify-content: space-between;
+    padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light);
+}
+.summary-card .summary-row:last-child {
+    border-bottom: none; font-weight: 700;
+    font-size: 1.1rem; color: var(--gold-dark);
+}
+
+/* ===== Alert Custom ===== */
+.alert-custom-success {
+    background-color: #d4edda; border-left: 4px solid var(--success);
+    color: #155724; border-radius: 5px;
+}
+.alert-custom-error {
+    background-color: #f8d7da; border-left: 4px solid var(--danger);
+    color: #721c24; border-radius: 5px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .hero-section-v2 { min-height: 450px; padding: 2rem 0; }
+    .hero-title-v2 { font-size: 2rem; }
+    .hero-subtitle-v2 { font-size: 1rem; }
+    .search-box-v2 { padding: 1rem 1.2rem; }
+    .section-padding { padding: 2.5rem 0; }
+    .search-bar { margin-top: 0; }
+    .stat-card { margin-bottom: 1rem; }
+    .destination-card { height: 150px; }
+    .auth-card-v2 { padding: 1.5rem; }
+}
+
+@media (max-width: 576px) {
+    .hero-title-v2 { font-size: 1.6rem; }
+    .search-box-v2 .row > div { margin-bottom: 0.5rem; }
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-in { animation: fadeInUp 0.5s ease forwards; }
+
+/* ===== Scroll Animations ===== */
+.destination-card,
+.feature-card-v2,
+.offer-card,
+.card-custom {
+    animation: fadeInUp 0.4s ease forwards;
+}

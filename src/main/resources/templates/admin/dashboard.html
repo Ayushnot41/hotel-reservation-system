@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Admin Dashboard')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div th:replace="~{fragments/layout :: messages}"></div>
+
+<section class="page-header">
+    <div class="container">
+        <h1><i class="bi bi-speedometer2 me-2"></i>Admin Dashboard</h1>
+        <p>Hotel management overview</p>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <!-- Stats Row -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="stat-card gold">
+                    <div class="stat-number" th:text="${totalRooms}">0</div>
+                    <div class="stat-label">Total Rooms</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card blue">
+                    <div class="stat-number" th:text="${totalBookings}">0</div>
+                    <div class="stat-label">Total Bookings</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card green">
+                    <div class="stat-number" th:text="${totalUsers}">0</div>
+                    <div class="stat-label">Registered Users</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card red">
+                    <div class="stat-number" th:text="${pendingBookings}">0</div>
+                    <div class="stat-label">Pending Bookings</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <a th:href="@{/admin/rooms}" class="card-custom d-block text-center p-4 text-decoration-none">
+                    <i class="bi bi-door-open" style="font-size: 2rem; color: #D4AF37;"></i>
+                    <h5 class="mt-2">Manage Rooms</h5>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a th:href="@{/admin/bookings}" class="card-custom d-block text-center p-4 text-decoration-none">
+                    <i class="bi bi-journal-bookmark" style="font-size: 2rem; color: #1B3A5C;"></i>
+                    <h5 class="mt-2">Manage Bookings</h5>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a th:href="@{/admin/guests}" class="card-custom d-block text-center p-4 text-decoration-none">
+                    <i class="bi bi-people" style="font-size: 2rem; color: #28A745;"></i>
+                    <h5 class="mt-2">View Guests</h5>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a th:href="@{/admin/messages}" class="card-custom d-block text-center p-4 text-decoration-none">
+                    <i class="bi bi-envelope" style="font-size: 2rem; color: #DC3545;"></i>
+                    <h5 class="mt-2 mb-0">Messages <span class="badge bg-danger" th:text="${totalMessages}">0</span></h5>
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Bookings -->
+        <h3 class="mb-3">Recent Bookings</h3>
+        <div class="table-responsive" th:if="${!recentBookings.isEmpty()}">
+            <table class="table table-custom">
+                <thead>
+                    <tr><th>#</th><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th><th>Total</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    <tr th:each="booking : ${recentBookings}">
+                        <td th:text="${booking.id}">#1</td>
+                        <td th:text="${booking.user.name}">Guest</td>
+                        <td th:text="'Room ' + ${booking.room.roomNumber}">Room 101</td>
+                        <td th:text="${#temporals.format(booking.checkInDate, 'dd MMM yyyy')}">01 Jan</td>
+                        <td th:text="${#temporals.format(booking.checkOutDate, 'dd MMM yyyy')}">05 Jan</td>
+                        <td>₹<span th:text="${booking.totalPrice}">20000</span></td>
+                        <td><span class="badge"
+                                  th:classappend="${booking.status.name() == 'PENDING'} ? 'badge-pending' :
+                                                   (${booking.status.name() == 'CONFIRMED'} ? 'badge-confirmed' :
+                                                   (${booking.status.name() == 'CANCELLED'} ? 'badge-cancelled' : 'badge-completed'))"
+                                  th:text="${booking.status.displayName}">Status</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

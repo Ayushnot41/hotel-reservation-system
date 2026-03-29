@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Book Room')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div th:replace="~{fragments/layout :: messages}"></div>
+
+<section class="page-header">
+    <div class="container">
+        <h1>Book a Room</h1>
+        <p th:text="'Room ' + ${room.roomNumber} + ' - ' + ${room.roomType.displayName}">Room Details</p>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-7">
+                <div class="card-custom p-4">
+                    <h3 class="mb-4"><i class="bi bi-calendar-check text-warning me-2"></i>Reservation Details</h3>
+                    <form th:action="@{/bookings/confirm}" method="post" class="needs-validation" novalidate>
+                        <input type="hidden" name="roomId" th:value="${room.id}">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Check-in Date *</label>
+                                <input type="date" class="form-control" name="checkIn" id="checkIn"
+                                       th:value="${checkIn}" required>
+                                <div class="invalid-feedback">Please select check-in date</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Check-out Date *</label>
+                                <input type="date" class="form-control" name="checkOut" id="checkOut"
+                                       th:value="${checkOut}" required>
+                                <div class="invalid-feedback">Please select check-out date</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Number of Guests *</label>
+                                <input type="number" class="form-control" name="guests" id="guests"
+                                       min="1" th:max="${room.capacity}" value="1" required>
+                                <small class="text-muted" id="roomCapacity" th:data-capacity="${room.capacity}">
+                                    Max capacity: <span th:text="${room.capacity}">2</span> guests
+                                </small>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Special Requests</label>
+                                <textarea class="form-control" name="specialRequests" rows="3"
+                                          placeholder="Any special requests? (e.g., extra pillows, late checkout)"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 p-3 rounded" style="background: #f8f9fa;">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Price per night:</span>
+                                <span id="pricePerNight" th:data-price="${room.pricePerNight}">
+                                    ₹<span th:text="${room.pricePerNight}">5000</span>
+                                </span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Duration:</span>
+                                <span id="nightsCount">Select dates</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between fw-bold" style="color: #B8960C;">
+                                <span>Estimated Total:</span>
+                                <span id="totalPrice">—</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-gold-custom btn-lg w-100 mt-4">
+                            <i class="bi bi-arrow-right-circle me-2"></i>Review & Confirm
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="card card-custom">
+                    <img th:src="${room.imageUrl != null ? room.imageUrl : 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800'}"
+                         class="card-img-top" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <span class="room-type-badge mb-2" th:text="${room.roomType.displayName}">Suite</span>
+                        <h5 class="card-title mt-2" th:text="'Room ' + ${room.roomNumber}">Room 101</h5>
+                        <p class="text-muted small" th:text="${room.description}">Description</p>
+                        <div th:if="${room.amenities != null}">
+                            <span class="amenity-tag" th:each="amenity : ${room.amenities.split(',')}" th:text="${amenity.trim()}">WiFi</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Booking Detail')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="summary-card">
+                    <h3 class="mb-4">Booking #<span th:text="${booking.id}">1</span></h3>
+                    <div class="summary-row"><span>Guest</span><span th:text="${booking.user.name}">Name</span></div>
+                    <div class="summary-row"><span>Email</span><span th:text="${booking.user.email}">Email</span></div>
+                    <div class="summary-row"><span>Room</span><span th:text="'Room ' + ${booking.room.roomNumber} + ' (' + ${booking.room.roomType.displayName} + ')'">Room</span></div>
+                    <div class="summary-row"><span>Check-in</span><span th:text="${#temporals.format(booking.checkInDate, 'dd MMM yyyy')}">Date</span></div>
+                    <div class="summary-row"><span>Check-out</span><span th:text="${#temporals.format(booking.checkOutDate, 'dd MMM yyyy')}">Date</span></div>
+                    <div class="summary-row"><span>Guests</span><span th:text="${booking.guests}">2</span></div>
+                    <div class="summary-row"><span>Special Requests</span><span th:text="${booking.specialRequests ?: 'None'}">None</span></div>
+                    <div class="summary-row"><span>Status</span>
+                        <span class="badge"
+                              th:classappend="${booking.status.name() == 'PENDING'} ? 'badge-pending' :
+                                               (${booking.status.name() == 'CONFIRMED'} ? 'badge-confirmed' :
+                                               (${booking.status.name() == 'CANCELLED'} ? 'badge-cancelled' : 'badge-completed'))"
+                              th:text="${booking.status.displayName}">Status</span>
+                    </div>
+                    <div class="summary-row"><span>Total</span><span>₹<span th:text="${booking.totalPrice}">20000</span></span></div>
+                </div>
+                <a th:href="@{/admin/bookings}" class="btn btn-outline-gold mt-3"><i class="bi bi-arrow-left me-1"></i> Back</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

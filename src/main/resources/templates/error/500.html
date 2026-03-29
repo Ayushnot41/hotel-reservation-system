@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Server Error')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<div class="error-page">
+    <div>
+        <div class="error-code">500</div>
+        <h2>Server Error</h2>
+        <p>Something went wrong on our end. Please try again later.</p>
+        <a th:href="@{/}" class="btn btn-gold-custom mt-3"><i class="bi bi-house me-1"></i> Go Home</a>
+    </div>
+</div>
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>

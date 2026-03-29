@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Booking Confirmed')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 text-center">
+                <div class="animate-in">
+                    <div style="font-size: 5rem; color: #28A745;">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    <h1 class="mt-3">Booking Confirmed!</h1>
+                    <p class="text-muted mb-4">Your reservation has been successfully confirmed. Here are your booking details.</p>
+                </div>
+
+                <div class="summary-card text-start">
+                    <div class="summary-row">
+                        <span>Booking ID</span>
+                        <span th:text="'#' + ${booking.id}">123</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Room</span>
+                        <span th:text="'Room ' + ${booking.room.roomNumber} + ' (' + ${booking.room.roomType.displayName} + ')'">Room 101</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Check-in</span>
+                        <span th:text="${#temporals.format(booking.checkInDate, 'dd MMM yyyy')}">01 Jan 2026</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Check-out</span>
+                        <span th:text="${#temporals.format(booking.checkOutDate, 'dd MMM yyyy')}">05 Jan 2026</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Guests</span>
+                        <span th:text="${booking.guests}">2</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Status</span>
+                        <span class="badge badge-confirmed" th:text="${booking.status.displayName}">Confirmed</span>
+                    </div>
+                    <div class="summary-row" th:if="${payment != null}">
+                        <span>Transaction ID</span>
+                        <span th:text="${payment.transactionId}">TXN-XXXX</span>
+                    </div>
+                    <div class="summary-row" th:if="${payment != null}">
+                        <span>Payment Method</span>
+                        <span th:text="${payment.paymentMethod.displayName}">Credit Card</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Total Paid</span>
+                        <span>₹<span th:text="${booking.totalPrice}">20000</span></span>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex gap-3 justify-content-center">
+                    <a th:href="@{/bookings/history}" class="btn btn-primary-custom">
+                        <i class="bi bi-journal-text me-1"></i> My Bookings
+                    </a>
+                    <a th:href="@{/}" class="btn btn-outline-gold">
+                        <i class="bi bi-house me-1"></i> Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+</body>
+</html>
