@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: grand-horizon-hotel
+    env: java
+    region: singapore
+    plan: free
+    buildCommand: "mvn clean package -DskipTests"
+    startCommand: "java -Xmx400m -jar target/reservation-1.0.0.jar"
+    envVars:
+      - key: JAVA_VERSION
+        value: 17
+      - key: PORT
+        value: 10000
