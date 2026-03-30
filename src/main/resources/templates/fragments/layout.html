@@ -34,9 +34,8 @@
             </ul>
             <ul class="navbar-nav">
                 <!-- Not logged in -->
-                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                <li class="nav-item d-flex align-items-center" sec:authorize="!isAuthenticated()">
                     <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#autoLoginModal" style="cursor: pointer;"><i class="bi bi-box-arrow-in-right"></i> Login / Sign Up</a>
-                </li>
                     <a class="btn btn-gold btn-sm ms-2" th:href="@{/register}">Register</a>
                 </li>
                 <!-- Logged in as USER -->
