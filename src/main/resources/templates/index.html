@@ -413,13 +413,11 @@
                     
                     <!-- Beautiful 4 Digit OTP Squares -->
                     <div class="d-flex justify-content-center gap-3 mb-4">
-                        <input type="text" class="form-control text-center shadow-sm border-0 bg-light" style="width: 55px; height: 60px; font-size: 1.8rem; font-weight: bold; border-radius: 12px;" maxlength="1" value="1">
-                        <input type="text" class="form-control text-center shadow-sm border-0 bg-light" style="width: 55px; height: 60px; font-size: 1.8rem; font-weight: bold; border-radius: 12px;" maxlength="1" value="2">
-                        <input type="text" class="form-control text-center shadow-sm border-0 bg-light" style="width: 55px; height: 60px; font-size: 1.8rem; font-weight: bold; border-radius: 12px;" maxlength="1" value="3">
-                        <input type="text" class="form-control text-center shadow-sm border-0 bg-light" style="width: 55px; height: 60px; font-size: 1.8rem; font-weight: bold; border-radius: 12px;" maxlength="1" value="4">
+                        <input type="text" class="otp-box form-control text-center shadow-sm border-0 bg-light" style="width: 55px; height: 60px; font-size: 1.8rem; font-weight: bold; border-radius: 12px;" maxlength="1">
+                        <input type="text" class="otp-box form-control text-center shadow-sm border-0 bg-light" style="width: 55px; height: 60px; font-size: 1.8rem; font-weight: bold; border-radius: 12px;" maxlength="1">
+                        <input type="text" class="otp-box form-control text-center shadow-sm border-0 bg-light" style="width: 55px; height: 60px; font-size: 1.8rem; font-weight: bold; border-radius: 12px;" maxlength="1">
+                        <input type="text" class="otp-box form-control text-center shadow-sm border-0 bg-light" style="width: 55px; height: 60px; font-size: 1.8rem; font-weight: bold; border-radius: 12px;" maxlength="1">
                     </div>
-                    <p class="text-muted small mb-4" style="font-size:0.75rem;">(Mock Mode: You can leave it as 1234 or type anything)</p>
-                    
                     <form th:action="@{/demo/otp-login}" method="post" id="otpSubmitForm">
                         <input type="hidden" name="phone" id="hiddenPhoneField">
                         <button type="button" class="btn btn-dark w-100 py-3 rounded-pill fw-bold fs-5 shadow-sm" onclick="verifyMockOtp()" id="verifyOtpBtn">
@@ -435,14 +433,13 @@
 <!-- Modal Logic Script -->
 <script th:if="${#request.userPrincipal == null}">
     document.addEventListener('DOMContentLoaded', function() {
-        // Delay the smooth auto-popup so the user sees the hero image first
         setTimeout(() => {
             const loginModal = new bootstrap.Modal(document.getElementById('autoLoginModal'));
             loginModal.show();
         }, 1800);
     });
 
-    function sendMockOtp() {
+    async function sendMockOtp() {
         const phone = document.getElementById('phoneNumber').value;
         if(phone.length < 10) {
             alert("Please enter a valid 10-digit mobile number!");
@@ -453,24 +450,80 @@
         btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Sending Secure OTP...';
         btn.disabled = true;
 
-        // Simulate 1.2 second network delay
-        setTimeout(() => {
-            document.getElementById('phoneStep').classList.add('d-none');
-            document.getElementById('otpStep').classList.remove('d-none');
-            document.getElementById('displayPhone').innerText = '+91 ' + phone;
-            document.getElementById('hiddenPhoneField').value = phone;
-        }, 1200);
+        try {
+            // Call actual backend to generate and send OTP via SMS
+            const response = await fetch('/auth/api/send-otp?phone=' + phone, { method: 'POST' });
+            if(response.ok) {
+                document.getElementById('phoneStep').classList.add('d-none');
+                document.getElementById('otpStep').classList.remove('d-none');
+                document.getElementById('displayPhone').innerText = '+91 ' + phone;
+                document.getElementById('hiddenPhoneField').value = phone;
+            } else {
+                alert("Failed to send OTP. Please try again.");
+                btn.innerHTML = 'Continue';
+                btn.disabled = false;
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Network error. Could not send OTP.");
+            btn.innerHTML = 'Continue';
+            btn.disabled = false;
+        }
     }
 
-    function verifyMockOtp() {
+    // Auto-focus logic for the 4-digit input squares
+    const otpInputs = document.querySelectorAll('.otp-box');
+    otpInputs.forEach((input, index) => {
+        input.addEventListener('keyup', (e) => {
+            if (e.key >= 0 && e.key <= 9 && index < otpInputs.length - 1) {
+                otpInputs[index + 1].focus();
+            } else if (e.key === 'Backspace' && index > 0) {
+                otpInputs[index - 1].focus();
+            }
+        });
+    });
+
+    async function verifyMockOtp() {
+        const phone = document.getElementById('hiddenPhoneField').value;
         const btn = document.getElementById('verifyOtpBtn');
-        btn.innerHTML = '<i class="bi bi-shield-check me-2"></i> Verified Successfully!';
-        btn.classList.remove('btn-dark');
-        btn.classList.add('btn-success');
         
-        setTimeout(() => {
-            document.getElementById('otpSubmitForm').submit();
-        }, 800);
+        // Grab the 4 digits typed by the user
+        let userEnteredOtp = "";
+        otpInputs.forEach(input => userEnteredOtp += input.value);
+        
+        if (userEnteredOtp.length !== 4) {
+            alert("Please enter all 4 digits correctly.");
+            return;
+        }
+
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Verifying...';
+        btn.disabled = true;
+
+        try {
+            // Call actual backend to verify the OTP they entered
+            const response = await fetch('/auth/api/verify-otp?phone=' + phone + '&otp=' + userEnteredOtp, { method: 'POST' });
+            if(response.ok) {
+                btn.innerHTML = '<i class="bi bi-shield-check me-2"></i> Verified Successfully!';
+                btn.classList.remove('btn-dark');
+                btn.classList.add('btn-success');
+                
+                // Refresh the page instantly so they are logged in!
+                setTimeout(() => window.location.reload(), 600);
+            } else {
+                alert("Invalid OTP! Please check your SMS and try again.");
+                btn.innerHTML = 'Verify & Login';
+                btn.disabled = false;
+                
+                // Clear boxes
+                otpInputs.forEach(input => input.value = "");
+                otpInputs[0].focus();
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Network error.");
+            btn.innerHTML = 'Verify & Login';
+            btn.disabled = false;
+        }
     }
 </script>
 
