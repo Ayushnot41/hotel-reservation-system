@@ -113,9 +113,13 @@ If you want to show this to the world, use a service like **Render.com**.
 1. Create a free Render account.
 2. Select **"Web Service"** and connect this exact GitHub repository.
 3. Set the Environment to **Java**.
-4. Set the Build Command to: `./mvnw clean package -DskipTests`
+4. Set the Build Command to: `mvn clean package -DskipTests` *(Do not use ./mvnw to avoid Windows file permission errors on Linux)*
 5. Set the Start Command to: `java -jar target/reservation-1.0.0.jar`
-6. Click deploy and watch it go live!
+6. **⚠️ EXTREMELY IMPORTANT:** Scroll down to **Environment Variables**, click Add Environmental Variable, and set:
+   *   Key: `JAVA_VERSION`
+   *   Value: `17`
+ *(If you do not set this, Render will use an ancient version of Java and crash with "Exited with status 1" during compilation).*
+7. Click deploy and watch it go live!
 
 *(Note: Don't forget to add your `fast2sms.api.key` securely in Render's environment variables if you want texts to keep working in production!)*
 
