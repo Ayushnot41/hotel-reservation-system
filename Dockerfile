@@ -8,8 +8,9 @@ WORKDIR /app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 
-# Convert Windows line endings (CRLF) to Unix line endings (LF) for the wrapper script, just in case
+# Make sure wrapper script is executable and has correct line endings
 RUN sed -i 's/\r$//' mvnw
+RUN chmod +x mvnw
 
 # Download dependencies
 RUN ./mvnw dependency:go-offline
