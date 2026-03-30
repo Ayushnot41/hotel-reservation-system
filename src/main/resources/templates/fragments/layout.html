@@ -271,11 +271,12 @@
     </script>
     <style>
     .slide-in-bottom {
-        animation: slide-in-bottom 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        animation: slide-in-bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        will-change: transform, opacity;
     }
     @keyframes slide-in-bottom {
-      0% { transform: translateY(30px); opacity: 0; }
-      100% { transform: translateY(0); opacity: 1; }
+      0% { transform: translate3d(0, 40px, 0); opacity: 0; }
+      100% { transform: translate3d(0, 0, 0); opacity: 1; }
     }
     .form-control:focus {
         box-shadow: none;

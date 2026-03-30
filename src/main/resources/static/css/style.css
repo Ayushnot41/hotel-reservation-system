@@ -25,12 +25,17 @@
     --success: #28A745;
     --danger: #DC3545;
     --warning: #FFC107;
-    --shadow: 0 2px 15px rgba(0,0,0,0.08);
-    --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
-    --transition: all 0.3s ease;
+    --shadow: 0 4px 15px rgba(0,0,0,0.05);
+    --shadow-hover: 0 15px 35px rgba(0,0,0,0.12);
+    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-gpu: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+    scroll-behavior: smooth;
+}
 
 body {
     font-family: 'Inter', sans-serif;
@@ -150,17 +155,20 @@ a:hover { color: var(--gold); }
 /* ===== Destination Cards ===== */
 .destination-card {
     display: block; position: relative; border-radius: 12px;
-    overflow: hidden; height: 200px; transition: var(--transition);
+    overflow: hidden; height: 200px; 
+    transition: var(--transition-gpu);
+    will-change: transform, box-shadow;
 }
 .destination-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    transform: translate3d(0, -8px, 0);
+    box-shadow: var(--shadow-hover);
 }
 .destination-card img {
     width: 100%; height: 100%; object-fit: cover;
-    transition: var(--transition);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
 }
-.destination-card:hover img { transform: scale(1.1); }
+.destination-card:hover img { transform: scale(1.08) translateZ(0); }
 .destination-overlay {
     position: absolute; bottom: 0; left: 0; right: 0;
     padding: 1rem;
@@ -218,10 +226,11 @@ a:hover { color: var(--gold); }
 .feature-card-v2 {
     background: var(--white); border-radius: 12px;
     padding: 2rem 1.5rem; box-shadow: var(--shadow);
-    transition: var(--transition); height: 100%;
+    transition: var(--transition-gpu); height: 100%;
+    will-change: transform, box-shadow;
 }
 .feature-card-v2:hover {
-    transform: translateY(-3px);
+    transform: translate3d(0, -6px, 0);
     box-shadow: var(--shadow-hover);
 }
 .feature-card-v2 h5 { font-size: 1rem; margin-bottom: 0.5rem; }
@@ -366,10 +375,11 @@ a:hover { color: var(--gold); }
 /* ===== Cards ===== */
 .card-custom {
     background: var(--white); border: none; border-radius: 10px;
-    box-shadow: var(--shadow); transition: var(--transition); overflow: hidden;
+    box-shadow: var(--shadow); transition: var(--transition-gpu); overflow: hidden;
+    will-change: transform, box-shadow;
 }
-.card-custom:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); }
-.card-custom .card-img-top { height: 220px; object-fit: cover; }
+.card-custom:hover { box-shadow: var(--shadow-hover); transform: translate3d(0, -6px, 0); }
+.card-custom .card-img-top { height: 220px; object-fit: cover; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
 .card-custom .card-body { padding: 1.5rem; }
 .card-custom .card-title {
     font-family: 'Playfair Display', serif; font-weight: 600;
@@ -534,17 +544,44 @@ a:hover { color: var(--gold); }
     .search-box-v2 .row > div { margin-bottom: 0.5rem; }
 }
 
-/* ===== Animations ===== */
+/* ===== Hardware-Accelerated Smooth Animations ===== */
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translate3d(0, 40px, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
 }
-.animate-in { animation: fadeInUp 0.5s ease forwards; }
+.animate-in { 
+    animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+    will-change: transform, opacity;
+}
 
-/* ===== Scroll Animations ===== */
+/* ===== Smooth Reveal Stagger Animations ===== */
 .destination-card,
 .feature-card-v2,
 .offer-card,
 .card-custom {
-    animation: fadeInUp 0.4s ease forwards;
+    animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    will-change: transform, opacity;
+    opacity: 0; /* Ensures absolutely no flashing on load */
 }
+
+/* Stagger calculation to beautifully stream in cards dynamically! */
+.destination-card:nth-child(1) { animation-delay: 0.1s; }
+.destination-card:nth-child(2) { animation-delay: 0.15s; }
+.destination-card:nth-child(3) { animation-delay: 0.2s; }
+.destination-card:nth-child(4) { animation-delay: 0.25s; }
+.destination-card:nth-child(5) { animation-delay: 0.3s; }
+.destination-card:nth-child(6) { animation-delay: 0.35s; }
+.destination-card:nth-child(n+7) { animation-delay: 0.4s; }
+
+.feature-card-v2:nth-child(1) { animation-delay: 0.1s; }
+.feature-card-v2:nth-child(2) { animation-delay: 0.2s; }
+.feature-card-v2:nth-child(3) { animation-delay: 0.3s; }
+.feature-card-v2:nth-child(4) { animation-delay: 0.4s; }
+
+.offer-card:nth-child(1) { animation-delay: 0.1s; }
+.offer-card:nth-child(2) { animation-delay: 0.2s; }
+.offer-card:nth-child(3) { animation-delay: 0.3s; }
+
+.card-custom:nth-child(1) { animation-delay: 0.1s; }
+.card-custom:nth-child(2) { animation-delay: 0.2s; }
+.card-custom:nth-child(3) { animation-delay: 0.3s; }
