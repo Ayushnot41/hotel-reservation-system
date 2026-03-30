@@ -138,7 +138,7 @@
             </div>
             <div class="col-6 col-md-4 col-lg-2">
                 <a th:href="@{/rooms/search(city='Udaipur')}" class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1615836245337-f589c198ee86?w=400&h=300&fit=crop" alt="Udaipur">
+                    <img src="https://images.unsplash.com/photo-1602508451806-e0c56c3eef19?w=400&h=300&fit=crop" alt="Udaipur">
                     <div class="destination-overlay">
                         <h5>Udaipur</h5>
                         <span>From ₹15,000</span>
@@ -176,7 +176,7 @@
             </div>
             <div class="col-6 col-md-4 col-lg-2">
                 <a th:href="@{/rooms/search(city='Hyderabad')}" class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1584444533380-681b9533f07a?w=400&h=300&fit=crop" alt="Hyderabad">
+                    <img src="https://images.unsplash.com/photo-1572638200581-8a4875742d18?w=400&h=300&fit=crop" alt="Hyderabad">
                     <div class="destination-overlay">
                         <h5>Hyderabad</h5>
                         <span>From ₹11,500</span>
@@ -194,7 +194,7 @@
             </div>
             <div class="col-6 col-md-4 col-lg-2">
                 <a th:href="@{/rooms/search(city='Agra')}" class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1548013146-7243aadd80cb?w=400&h=300&fit=crop" alt="Agra">
+                    <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?w=400&h=300&fit=crop" alt="Agra">
                     <div class="destination-overlay">
                         <h5>Agra</h5>
                         <span>From ₹8,800</span>
@@ -203,7 +203,7 @@
             </div>
             <div class="col-6 col-md-4 col-lg-2">
                 <a th:href="@{/rooms/search(city='Varanasi')}" class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1561361513-2d0ce65126fe?w=400&h=300&fit=crop" alt="Varanasi">
+                    <img src="https://images.unsplash.com/photo-1571536802807-30451e3955d8?w=400&h=300&fit=crop" alt="Varanasi">
                     <div class="destination-overlay">
                         <h5>Varanasi</h5>
                         <span>From ₹8,000</span>
@@ -214,7 +214,7 @@
             <!-- Row 3: Final Added Cities -->
             <div class="col-6 col-md-4 col-lg-2 mt-3 mt-lg-0">
                 <a th:href="@{/rooms/search(city='Pune')}" class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1628189873138-0387e35ccb76?w=400&h=300&fit=crop" alt="Pune">
+                    <img src="https://images.unsplash.com/photo-1580581096469-8afb14cd2eee?w=400&h=300&fit=crop" alt="Pune">
                     <div class="destination-overlay">
                         <h5>Pune</h5>
                         <span>From ₹3,200</span>
@@ -223,7 +223,7 @@
             </div>
             <div class="col-6 col-md-4 col-lg-2 mt-3 mt-lg-0">
                 <a th:href="@{/rooms/search(city='Ahmedabad')}" class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1596706972605-6eb7f2ced3cb?w=400&h=300&fit=crop" alt="Ahmedabad">
+                    <img src="https://images.unsplash.com/photo-1609948543911-0c88c00041bb?w=400&h=300&fit=crop" alt="Ahmedabad">
                     <div class="destination-overlay">
                         <h5>Ahmedabad</h5>
                         <span>From ₹5,000</span>
@@ -232,7 +232,7 @@
             </div>
             <div class="col-6 col-md-4 col-lg-2 mt-3 mt-lg-0">
                 <a th:href="@{/rooms/search(city='Shimla')}" class="destination-card">
-                    <img src="https://images.unsplash.com/photo-1506526611598-1e433db9b8ea?w=400&h=300&fit=crop" alt="Shimla">
+                    <img src="https://images.unsplash.com/photo-1597074866923-dc0589150458?w=400&h=300&fit=crop" alt="Shimla">
                     <div class="destination-overlay">
                         <h5>Shimla</h5>
                         <span>From ₹13,000</span>
@@ -371,6 +371,10 @@
 
 
 <!-- OTP Modal has been permanently relocated to layout.html for Global Accessibility -->
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<div th:replace="~{fragments/layout :: scripts}"></div>
+
 <script>
     // Set minimum date for check-in/check-out
     document.addEventListener('DOMContentLoaded', function() {
