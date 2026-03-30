@@ -1,96 +1,303 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head('Booking Summary')}"></head>
-<body>
+<head th:replace="~{fragments/layout :: head('Secure Checkout')}"></head>
+<body style="background-color: #f7f9fa;">
 <nav th:replace="~{fragments/layout :: navbar}"></nav>
 
-<section class="page-header">
-    <div class="container">
-        <h1>Booking Summary</h1>
-        <p>Please review your booking details before confirming</p>
+<section class="page-header" style="padding: 40px 0; background: linear-gradient(135deg, #1e3a5f 0%, #0d2238 100%);">
+    <div class="container text-center text-white">
+        <h2 class="mb-1"><i class="bi bi-shield-lock text-success me-2"></i>Secure Payment Gateway</h2>
+        <p class="mb-0 text-white-50">100% Encrypted & Safe Transaction</p>
     </div>
 </section>
 
-<section class="section-padding">
+<section class="section-padding py-5">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="summary-card">
-                    <h3 class="mb-4"><i class="bi bi-clipboard-check text-warning me-2"></i>Reservation Summary</h3>
+        <!-- Main Form Wrapper -->
+        <form id="paymentForm" th:action="@{/bookings/create}" method="post">
+            <input type="hidden" name="roomId" th:value="${room.id}">
+            <input type="hidden" name="checkIn" th:value="${checkIn}">
+            <input type="hidden" name="checkOut" th:value="${checkOut}">
+            <input type="hidden" name="guests" th:value="${guests}">
+            <input type="hidden" name="specialRequests" th:value="${specialRequests}">
+            <!-- The actual parameter backend uses -->
+            <input type="hidden" id="finalPaymentMethod" name="paymentMethod" value="UPI">
 
-                    <div class="summary-row">
-                        <span>Room</span>
-                        <span th:text="'Room ' + ${room.roomNumber} + ' (' + ${room.roomType.displayName} + ')'">Room 101 (Suite)</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Check-in</span>
-                        <span th:text="${#temporals.format(checkIn, 'dd MMM yyyy')}">01 Jan 2026</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Check-out</span>
-                        <span th:text="${#temporals.format(checkOut, 'dd MMM yyyy')}">05 Jan 2026</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Duration</span>
-                        <span th:text="${nights} + ' night(s)'">4 nights</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Guests</span>
-                        <span th:text="${guests}">2</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Price per Night</span>
-                        <span>₹<span th:text="${room.pricePerNight}">5000</span></span>
-                    </div>
-                    <div class="summary-row" th:if="${specialRequests != null && !specialRequests.isEmpty()}">
-                        <span>Special Requests</span>
-                        <span th:text="${specialRequests}">None</span>
-                    </div>
-                    <div class="summary-row" style="font-size: 1.2rem;">
-                        <span>Total Amount</span>
-                        <span>₹<span th:text="${totalPrice}">20000</span></span>
-                    </div>
+            <div class="row g-4">
+                
+                <!-- Left Column: Payment Section -->
+                <div class="col-lg-7 order-2 order-lg-1">
+                    <div class="card shadow-sm border-0 rounded-4 overflow-hidden mb-4">
+                        <div class="row g-0">
+                            <!-- Vertical Tabs (Desktop) / Horizontal Tabs (Mobile) -->
+                            <div class="col-md-4 bg-light border-end payment-tabs-wrapper">
+                                <div class="nav flex-row flex-md-column nav-pills p-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                    <button class="nav-link active payment-tab text-start mb-2" id="v-pills-upi-tab" data-bs-toggle="pill" data-bs-target="#v-pills-upi" type="button" role="tab" onclick="setPaymentMethod('UPI')">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png" alt="UPI" style="width: 24px; height: 16px; object-fit: contain;" class="me-2 text-primary">
+                                        UPI & QR
+                                    </button>
+                                    <button class="nav-link payment-tab text-start mb-2" id="v-pills-card-tab" data-bs-toggle="pill" data-bs-target="#v-pills-card" type="button" role="tab" onclick="setPaymentMethod('CREDIT_CARD')">
+                                        <i class="bi bi-credit-card-2-front text-primary me-2"></i> Credit / Debit Card
+                                    </button>
+                                    <button class="nav-link payment-tab text-start" id="v-pills-cash-tab" data-bs-toggle="pill" data-bs-target="#v-pills-cash" type="button" role="tab" onclick="setPaymentMethod('CASH')">
+                                        <i class="bi bi-wallet2 text-primary me-2"></i> Pay at Hotel
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Tab Content Area -->
+                            <div class="col-md-8 p-4">
+                                <div class="tab-content" id="v-pills-tabContent">
+                                    
+                                    <!-- UPI / QR Section -->
+                                    <div class="tab-pane fade show active" id="v-pills-upi" role="tabpanel">
+                                        <h5 class="mb-3 text-dark fw-bold">Scan & Pay</h5>
+                                        <p class="text-muted small">Scan the QR code below using any UPI app (GPay, PhonePe, Paytm, etc.)</p>
+                                        <div class="text-center mb-4">
+                                            <div class="p-3 bg-white border rounded-3 d-inline-block shadow-sm">
+                                                <!-- Mock QR Code Placeholder -->
+                                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=mock@upi&pn=GrandHorizon&am=20000.00" alt="QR Code" class="img-fluid" width="150">
+                                            </div>
+                                            <p class="mt-2 text-primary font-monospace fw-bold">grandhorizon@ybl</p>
+                                        </div>
+                                        <div class="w-100 text-center mb-3">
+                                            <span class="text-muted small">--- OR ---</span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label small text-muted">Enter your UPI ID</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="upiId" placeholder="ex: 1234567890@ybl">
+                                                <button class="btn btn-outline-success" type="button" onclick="verifyUpi()">Verify</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Card Section -->
+                                    <div class="tab-pane fade" id="v-pills-card" role="tabpanel">
+                                        <h5 class="mb-3 text-dark fw-bold">Pay via Card</h5>
+                                        <div class="mb-3">
+                                            <label class="form-label small text-muted">Card Number</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white"><i class="bi bi-credit-card text-muted"></i></span>
+                                                <input type="text" class="form-control" placeholder="0000 0000 0000 0000" maxlength="19">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label small text-muted">Name on Card</label>
+                                            <input type="text" class="form-control" placeholder="John Doe">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6 mb-3">
+                                                <label class="form-label small text-muted">Valid Thru</label>
+                                                <input type="text" class="form-control" placeholder="MM/YY" maxlength="5">
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <label class="form-label small text-muted">CVV</label>
+                                                <div class="input-group">
+                                                    <input type="password" class="form-control" placeholder="123" maxlength="3">
+                                                    <span class="input-group-text bg-white" data-bs-toggle="tooltip" title="3 digits on back"><i class="bi bi-info-circle text-muted"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center mt-2 p-2 bg-light rounded text-success small">
+                                            <i class="bi bi-shield-check me-2 fs-5"></i>
+                                            Your card details are protected with 256-bit encryption.
+                                        </div>
+                                    </div>
 
-                    <!-- Payment Method Selection -->
-                    <div class="mt-4 mb-3">
-                        <h5>Select Payment Method</h5>
-                    </div>
-                    <form th:action="@{/bookings/create}" method="post">
-                        <input type="hidden" name="roomId" th:value="${room.id}">
-                        <input type="hidden" name="checkIn" th:value="${checkIn}">
-                        <input type="hidden" name="checkOut" th:value="${checkOut}">
-                        <input type="hidden" name="guests" th:value="${guests}">
-                        <input type="hidden" name="specialRequests" th:value="${specialRequests}">
+                                    <!-- Pay at Hotel (Cash) Section -->
+                                    <div class="tab-pane fade" id="v-pills-cash" role="tabpanel">
+                                        <div class="text-center py-4">
+                                            <i class="bi bi-calendar2-check text-success" style="font-size: 3rem;"></i>
+                                            <h5 class="mt-3 fw-bold text-dark">Pay Later on Arrival</h5>
+                                            <p class="text-muted">You can pay using Cash or Card at the hotel reception during check-in. Note that booking confirmation requires a verified account.</p>
+                                        </div>
+                                    </div>
 
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6" th:each="method : ${paymentMethods}">
-                                <div class="form-check card-custom p-3">
-                                    <input class="form-check-input" type="radio" name="paymentMethod"
-                                           th:value="${method}" th:id="${method}" required
-                                           th:checked="${methodStat.first}">
-                                    <label class="form-check-label ms-2" th:for="${method}" th:text="${method.displayName}">
-                                        Credit Card
-                                    </label>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="d-flex gap-3">
-                            <button type="button" class="btn btn-outline-gold" onclick="history.back()">
-                                <i class="bi bi-arrow-left me-1"></i> Go Back
+                <!-- Right Column: Booking Summary & Submit -->
+                <div class="col-lg-5 order-1 order-lg-2">
+                    <div class="card shadow-sm border-0 rounded-4 sticky-top pb-3" style="top: 20px;">
+                        <div class="card-body p-4">
+                            <h4 class="fw-bold mb-4">Fare Summary</h4>
+                            
+                            <!-- Room Overview Mini-Card -->
+                            <div class="d-flex align-items-center mb-4 p-3 border rounded bg-light">
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold mb-1 text-dark" th:text="${room.roomType.displayName}">Luxury Suite</h6>
+                                    <p class="text-muted small mb-0"><i class="bi bi-geo-alt me-1"></i> <span th:text="${room.city} + ', ' + ${room.location}">Delhi, Central</span></p>
+                                    <p class="text-muted small mb-0"><i class="bi bi-door-open me-1"></i> Room <span th:text="${room.roomNumber}">101</span></p>
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge bg-gold-custom"><i class="bi bi-star-fill text-white"></i> 5.0</span>
+                                </div>
+                            </div>
+
+                            <!-- Cost Breakdown -->
+                            <div class="d-flex justify-content-between mb-2 text-muted">
+                                <span>Check-in:</span>
+                                <span class="fw-bold text-dark" th:text="${#temporals.format(checkIn, 'dd MMM yyyy')}">01 Jan</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2 text-muted">
+                                <span>Check-out:</span>
+                                <span class="fw-bold text-dark" th:text="${#temporals.format(checkOut, 'dd MMM yyyy')}">05 Jan</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2 text-muted">
+                                <span>Duration:</span>
+                                <span class="fw-bold text-dark" th:text="${nights} + ' night(s)'">4 nights</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3 text-muted">
+                                <span>Guests:</span>
+                                <span class="fw-bold text-dark" th:text="${guests}">2 Adults</span>
+                            </div>
+                            
+                            <hr>
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-dark">Base Price (x<span th:text="${nights}"></span>)</span>
+                                <span class="fw-bold">₹<span th:text="${room.pricePerNight}">5000</span></span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2 text-success">
+                                <span>Taxes & Fees <i class="bi bi-info-circle small" data-bs-toggle="tooltip" title="Included in total"></i></span>
+                                <span>Inclusive</span>
+                            </div>
+                            
+                            <hr>
+
+                            <!-- Total -->
+                            <div class="d-flex justify-content-between align-items-end mb-4">
+                                <span class="fw-bold text-dark fs-5">Total Pay</span>
+                                <span class="fw-bolder fs-3 text-gold">₹<span th:text="${totalPrice}">20000</span></span>
+                            </div>
+
+                            <!-- Payment Processor Button -->
+                            <button type="button" id="initiatePaymentBtn" class="btn btn-gold-custom w-100 py-3 rounded-pill fw-bold fs-5 shadow-sm" onclick="processMockPayment()">
+                                <i class="bi bi-lock-fill me-2"></i> Pay Securely
                             </button>
-                            <button type="submit" class="btn btn-gold-custom flex-grow-1">
-                                <i class="bi bi-check-circle me-2"></i>Confirm & Pay ₹<span th:text="${totalPrice}">20000</span>
-                            </button>
+                            <p class="text-center text-muted mt-3" style="font-size: 0.75rem;">By proceeding, you agree to our Terms & Conditions and Privacy Policy.</p>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </section>
 
+<!-- Payment Processing Modal (Loading Simulation) -->
+<div class="modal fade" id="paymentLoadingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg text-center p-5 rounded-4">
+            <div id="paymentSpinner">
+                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
+                <h4 class="mt-4 fw-bold">Processing Verification...</h4>
+                <p class="text-muted mt-2">Connecting to secure gateway. Please do not refresh.</p>
+            </div>
+            <div id="paymentSuccess" class="d-none">
+                <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+                <h4 class="mt-3 fw-bold text-success">Verified & Successful!</h4>
+                <p class="text-muted">Redirecting to booking confirmation...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <footer th:replace="~{fragments/layout :: footer}"></footer>
 <div th:replace="~{fragments/layout :: scripts}"></div>
+
+<script>
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+
+    // Handle Payment Method Selection via JS
+    function setPaymentMethod(method) {
+        document.getElementById('finalPaymentMethod').value = method;
+        
+        let payBtn = document.getElementById('initiatePaymentBtn');
+        if(method === 'CASH') {
+            payBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i> Book Now & Pay Later';
+        } else {
+            payBtn.innerHTML = '<i class="bi bi-lock-fill me-2"></i> Pay Securely';
+        }
+    }
+
+    // UPI Verification Mock
+    function verifyUpi() {
+        let upiField = document.getElementById('upiId');
+        if(!upiField.value.includes('@')) {
+            alert('Please enter a valid UPI ID');
+            return;
+        }
+        upiField.classList.add('is-valid');
+        upiField.classList.remove('is-invalid');
+        alert("UPI ID Verified Successfully: " + upiField.value);
+    }
+
+    // Process Payment Mock Flow
+    function processMockPayment() {
+        // Show the secure loading modal
+        var modal = new bootstrap.Modal(document.getElementById('paymentLoadingModal'));
+        modal.show();
+
+        // Simulate 2 second highly-realistic payment verification loading screen
+        setTimeout(function() {
+            document.getElementById('paymentSpinner').classList.add('d-none');
+            document.getElementById('paymentSuccess').classList.remove('d-none');
+            
+            // After 1 second of showing success, automatically submit the real form via POST
+            setTimeout(function() {
+                document.getElementById('paymentForm').submit();
+            }, 1000);
+        }, 2200);
+    }
+</script>
+
+<style>
+/* Sleek custom styling for the payment tabs */
+.payment-tabs-wrapper {
+    background-color: #f8f9fa;
+}
+.payment-tab {
+    color: #495057;
+    border-radius: 8px !important;
+    font-weight: 500;
+}
+.payment-tab.active {
+    background-color: #e9ecef !important;
+    color: #0d2238 !important;
+    font-weight: 700;
+    box-shadow: inset 3px 0 0 0 #cf9b3e; /* Gold indicator line */
+}
+.payment-tab:hover:not(.active) {
+    background-color: #e2e6ea;
+}
+.text-gold {
+    color: #cf9b3e;
+}
+
+/* Make Tabs scrollable horizontally on Mobile so it doesn't break layout */
+@media (max-width: 767.98px) {
+    .nav-pills {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+    .payment-tab {
+        white-space: nowrap;
+        margin-right: 10px;
+        flex: 0 0 auto;
+    }
+    .payment-tab.active {
+        box-shadow: inset 0 -3px 0 0 #cf9b3e; /* Bottom indicator line for mobile */
+    }
+}
+</style>
 </body>
 </html>
