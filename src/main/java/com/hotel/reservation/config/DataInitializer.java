@@ -97,6 +97,85 @@ public class DataInitializer implements CommandLineRunner {
                     .amenities("Wi-Fi,Smart TV,AC,Mini Bar,City View,Coffee Machine").available(true)
                     .city("Bangalore").location("MG Road, Bangalore")
                     .imageUrl("https://images.unsplash.com/photo-1595576508898-0ad5c879a061?w=800").build());
+            roomRepository.save(Room.builder()
+                    .roomNumber("901").roomType(RoomType.DELUXE)
+                    .pricePerNight(new BigDecimal("6000"))
+                    .capacity(2).description("Classic deluxe room offering heritage colonial architecture combined with modern luxury amenities.")
+                    .amenities("Wi-Fi,TV,AC,Mini Bar,Heritage Architecture,Library Context").available(true)
+                    .city("Kolkata").location("Park Street area, Kolkata")
+                    .imageUrl("https://images.unsplash.com/photo-1549294413-26f195200c16?w=800").build());
+
+            roomRepository.save(Room.builder()
+                    .roomNumber("1001").roomType(RoomType.DOUBLE)
+                    .pricePerNight(new BigDecimal("4800"))
+                    .capacity(2).description("Comfortable seaside double room with spectacular views of the Marina Beach horizon and ocean breeze.")
+                    .amenities("Wi-Fi,TV,AC,Mini Bar,Ocean View,Seaside Balcony").available(true)
+                    .city("Chennai").location("Marina Beach, Chennai")
+                    .imageUrl("https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=800").build());
+
+            roomRepository.save(Room.builder()
+                    .roomNumber("1101").roomType(RoomType.SUITE)
+                    .pricePerNight(new BigDecimal("11500"))
+                    .capacity(3).description("Nizam Era luxury suite featuring majestic decor, a dedicated dining hall, and spectacular city panoramas.")
+                    .amenities("Wi-Fi,TV,AC,Mini Bar,Royal Decor,City Panoramic,Butler").available(true)
+                    .city("Hyderabad").location("Banjara Hills, Hyderabad")
+                    .imageUrl("https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800").build());
+
+            roomRepository.save(Room.builder()
+                    .roomNumber("1201").roomType(RoomType.SINGLE)
+                    .pricePerNight(new BigDecimal("3200"))
+                    .capacity(1).description("Minimalist and extremely quiet single den designed specifically for remote workers and IT professionals.")
+                    .amenities("High-Speed Wi-Fi,Workstation,Ergonomic Chair,AC,Cafeteria").available(true)
+                    .city("Pune").location("Koregaon Park, Pune")
+                    .imageUrl("https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800").build());
+
+            roomRepository.save(Room.builder()
+                    .roomNumber("1301").roomType(RoomType.DELUXE)
+                    .pricePerNight(new BigDecimal("7000"))
+                    .capacity(2).description("Tropical deluxe resort room nestled in the scenic backwaters with houseboat pickup access.")
+                    .amenities("Wi-Fi,TV,AC,Lagoon View,Houseboat Access,Spa").available(true)
+                    .city("Kochi").location("Fort Kochi, Kerala")
+                    .imageUrl("https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?w=800").build());
+
+            roomRepository.save(Room.builder()
+                    .roomNumber("1401").roomType(RoomType.DOUBLE)
+                    .pricePerNight(new BigDecimal("5000"))
+                    .capacity(2).description("Modern business-class room near the riverfront, offering seamless comfort, luxury bedding, and smart lighting.")
+                    .amenities("Wi-Fi,TV,AC,Mini Bar,Smart Lighting,Riverfront Access").available(true)
+                    .city("Ahmedabad").location("Sabarmati Riverfront, Ahmedabad")
+                    .imageUrl("https://images.unsplash.com/photo-1560411707-160680fb5d7c?w=800").build());
+            
+            roomRepository.save(Room.builder()
+                    .roomNumber("1501").roomType(RoomType.FAMILY)
+                    .pricePerNight(new BigDecimal("8000"))
+                    .capacity(4).description("Spacious divine stay near the ancient Ghats. Designed for families wanting peace, holistic living, and temple views.")
+                    .amenities("Wi-Fi,AC,Family Lounge,Ghat View,Temple Proximity,Yoga Mats").available(true)
+                    .city("Varanasi").location("Dashashwamedh Ghat, Varanasi")
+                    .imageUrl("https://images.unsplash.com/photo-1587985172283-bc2e185c7041?w=800").build());
+
+            roomRepository.save(Room.builder()
+                    .roomNumber("1601").roomType(RoomType.DELUXE)
+                    .pricePerNight(new BigDecimal("8800"))
+                    .capacity(2).description("Taj-facing deluxe romantic room. Perfect for couples arriving to experience the monument of love.")
+                    .amenities("Wi-Fi,AC,TV,Taj Mahal View,Romantic Setup,Balcony").available(true)
+                    .city("Agra").location("Taj East Gate Road, Agra")
+                    .imageUrl("https://images.unsplash.com/photo-1629140727571-9b5c6f6267b4?w=800").build());
+
+            roomRepository.save(Room.builder()
+                    .roomNumber("1701").roomType(RoomType.SUITE)
+                    .pricePerNight(new BigDecimal("13000"))
+                    .capacity(3).description("Cozy, wood-paneled Himalayan suite featuring an actual fireplace and stunning snow-capped mountain views.")
+                    .amenities("Wi-Fi,Heater,Fireplace,Mountain View,Hot Springs Access").available(true)
+                    .city("Shimla").location("Mall Road, Shimla")
+                    .imageUrl("https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=800").build());
+
+            roomRepository.save(Room.builder()
+                    .roomNumber("1801").roomType(RoomType.DELUXE)
+                    .pricePerNight(new BigDecimal("6500"))
+                    .capacity(2).description("Tea Estate heritage suite overlooking the misty valleys of the Himalayas. Awaken to pure nature.")
+                    .amenities("Wi-Fi,Heater,Tea Estate Tour,Valley View,Vintage Decor").available(true)
+                    .city("Darjeeling").location("Happy Valley, Darjeeling")
+                    .imageUrl("https://images.unsplash.com/photo-1551882547-ff40c0d129df?w=800").build());
         }
     }
 }
