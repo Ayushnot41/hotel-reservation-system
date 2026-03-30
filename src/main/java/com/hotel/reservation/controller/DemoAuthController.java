@@ -66,4 +66,33 @@ public class DemoAuthController {
         // 4. Redirect to the homepage just like normal login
         return new RedirectView("/");
     }
+
+    @org.springframework.web.bind.annotation.PostMapping("/otp-login")
+    public RedirectView otpLogin(HttpServletRequest request, @org.springframework.web.bind.annotation.RequestParam("phone") String phone) {
+        String mockEmail = phone + "@mobile-auth.com";
+        String mockName = "User " + phone.substring(phone.length() > 4 ? phone.length() - 4 : 0);
+        
+        Optional<User> existingUser = userRepository.findByEmail(mockEmail);
+        if (existingUser.isEmpty()) {
+            User newUser = new User();
+            newUser.setName(mockName);
+            newUser.setEmail(mockEmail);
+            newUser.setPhone(phone);
+            newUser.setPassword("$2a$10$xyz123mockpasswordhash"); 
+            newUser.setRole(Role.USER);
+            userRepository.save(newUser);
+        }
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(mockEmail);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+        
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(authentication);
+
+        HttpSession session = request.getSession(true);
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+
+        return new RedirectView("/");
+    }
 }
