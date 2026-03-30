@@ -35,9 +35,8 @@
             <ul class="navbar-nav">
                 <!-- Not logged in -->
                 <li class="nav-item" sec:authorize="!isAuthenticated()">
-                    <a class="nav-link" th:href="@{/login}"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#autoLoginModal" style="cursor: pointer;"><i class="bi bi-box-arrow-in-right"></i> Login / Sign Up</a>
                 </li>
-                <li class="nav-item" sec:authorize="!isAuthenticated()">
                     <a class="btn btn-gold btn-sm ms-2" th:href="@{/register}">Register</a>
                 </li>
                 <!-- Logged in as USER -->
@@ -110,6 +109,180 @@
 <div th:fragment="scripts">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src="@{/js/main.js}"></script>
+
+    <!-- Global OTP Login Modal (Injected into all pages via Layout) -->
+    <div sec:authorize="!isAuthenticated()" class="modal fade" id="autoLoginModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow-lg" style="overflow: hidden;">
+                <div class="modal-header border-0 pb-0 text-end d-block">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 pt-1 text-center">
+                    <!-- Step 1: Phone Input -->
+                    <div id="phoneStep">
+                        <div class="mx-auto bg-light rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 65px; height: 65px;">
+                            <i class="bi bi-shield-lock-fill text-gold fs-1" style="color: #cf9b3e;"></i>
+                        </div>
+                        <h4 class="fw-bold mb-2">Login / Sign Up</h4>
+                        <p class="text-muted small mb-4 px-3">Secure your booking and unlock exclusive discounts instantly.</p>
+                        
+                        <div class="input-group mb-4 shadow-sm rounded-3 overflow-hidden">
+                            <span class="input-group-text bg-white border-0 fw-bold border-end pe-2">+91</span>
+                            <input type="tel" id="phoneNumber" class="form-control border-0 px-2 fw-bold" style="font-size: 1.1rem; letter-spacing: 2px;" placeholder="0000000000" maxlength="10">
+                        </div>
+                        
+                        <button class="btn btn-gold-custom w-100 py-3 rounded-pill fw-bold fs-5 shadow-sm" onclick="sendMockOtp()" id="getOtpBtn">
+                            Continue
+                        </button>
+                        
+                        <div class="mt-4 mb-2 position-relative">
+                            <hr class="text-muted">
+                            <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted small fw-bold">OR</span>
+                        </div>
+                        
+                        <div class="d-flex justify-content-center gap-3 mt-3">
+                            <a th:href="@{/demo/google-login}" class="btn btn-outline-dark py-2 px-4 rounded-pill d-flex align-items-center"><i class="bi bi-google me-2"></i> Google</a>
+                            <a th:href="@{/demo/apple-login}" class="btn btn-outline-dark py-2 px-4 rounded-pill d-flex align-items-center"><i class="bi bi-apple me-2"></i> Apple</a>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: OTP Verification -->
+                    <div id="otpStep" class="d-none slide-in-bottom">
+                        <h4 class="fw-bold mb-2">Verify Mobile</h4>
+                        <p class="text-muted small mb-4">Enter the 4-digit code sent via SMS to <br><b class="text-dark fs-6" id="displayPhone"></b> <a href="#" onclick="location.reload()" class="text-primary text-decoration-none ms-1"><i class="bi bi-pencil-square"></i></a></p>
+                        
+                        <div class="d-flex justify-content-center gap-3 mb-4">
+                            <input type="text" class="otp-box form-control text-center shadow-sm border-0 bg-light" style="width: 55px; height: 60px; font-size: 1.8rem; font-weight: bold; border-radius: 12px;" maxlength="1">
+                            <input type="text" class="otp-box form-control text-center shadow-sm border-0 bg-light" style="width: 55px; height: 60px; font-size: 1.8rem; font-weight: bold; border-radius: 12px;" maxlength="1">
+                            <input type="text" class="otp-box form-control text-center shadow-sm border-0 bg-light" style="width: 55px; height: 60px; font-size: 1.8rem; font-weight: bold; border-radius: 12px;" maxlength="1">
+                            <input type="text" class="otp-box form-control text-center shadow-sm border-0 bg-light" style="width: 55px; height: 60px; font-size: 1.8rem; font-weight: bold; border-radius: 12px;" maxlength="1">
+                        </div>
+                        <form th:action="@{/demo/otp-login}" method="post" id="otpSubmitForm">
+                            <input type="hidden" name="phone" id="hiddenPhoneField">
+                            <button type="button" class="btn btn-dark w-100 py-3 rounded-pill fw-bold fs-5 shadow-sm" onclick="verifyMockOtp()" id="verifyOtpBtn">
+                                Verify & Login
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Logic Script Guaranteed After Bootstrap -->
+    <script sec:authorize="!isAuthenticated()">
+        // Auto-show only on homepage if path is precisely "/"
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.location.pathname === '/') {
+                setTimeout(() => {
+                    try {
+                        const loginModal = new bootstrap.Modal(document.getElementById('autoLoginModal'));
+                        loginModal.show();
+                    } catch (err) {
+                        console.error("Modal Init Error:", err);
+                    }
+                }, 1800);
+            }
+        });
+
+        async function sendMockOtp() {
+            const phone = document.getElementById('phoneNumber').value;
+            if(phone.length < 10) {
+                alert("Please enter a valid 10-digit mobile number!");
+                return;
+            }
+            
+            const btn = document.getElementById('getOtpBtn');
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Sending Secure OTP...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/auth/api/send-otp?phone=' + phone, { method: 'POST' });
+                if(response.ok) {
+                    document.getElementById('phoneStep').classList.add('d-none');
+                    document.getElementById('otpStep').classList.remove('d-none');
+                    document.getElementById('displayPhone').innerText = '+91 ' + phone;
+                    document.getElementById('hiddenPhoneField').value = phone;
+                } else {
+                    alert("Failed to send OTP. Please try again.");
+                    btn.innerHTML = 'Continue';
+                    btn.disabled = false;
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Network error. Could not send OTP.");
+                btn.innerHTML = 'Continue';
+                btn.disabled = false;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const otpInputs = document.querySelectorAll('.otp-box');
+            if(otpInputs) {
+                otpInputs.forEach((input, index) => {
+                    input.addEventListener('keyup', (e) => {
+                        if (e.key >= 0 && e.key <= 9 && index < otpInputs.length - 1) {
+                            otpInputs[index + 1].focus();
+                        } else if (e.key === 'Backspace' && index > 0) {
+                            otpInputs[index - 1].focus();
+                        }
+                    });
+                });
+            }
+        });
+
+        async function verifyMockOtp() {
+            const phone = document.getElementById('hiddenPhoneField').value;
+            const btn = document.getElementById('verifyOtpBtn');
+            
+            let userEnteredOtp = "";
+            const otpInputs = document.querySelectorAll('.otp-box');
+            otpInputs.forEach(input => userEnteredOtp += input.value);
+            
+            if (userEnteredOtp.length !== 4) {
+                alert("Please enter all 4 digits correctly.");
+                return;
+            }
+
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Verifying...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/auth/api/verify-otp?phone=' + phone + '&otp=' + userEnteredOtp, { method: 'POST' });
+                if(response.ok) {
+                    btn.innerHTML = '<i class="bi bi-shield-check me-2"></i> Verified Successfully!';
+                    btn.classList.remove('btn-dark');
+                    btn.classList.add('btn-success');
+                    setTimeout(() => window.location.reload(), 600);
+                } else {
+                    alert("Invalid OTP! Please check your SMS and try again.");
+                    btn.innerHTML = 'Verify & Login';
+                    btn.disabled = false;
+                    otpInputs.forEach(input => input.value = "");
+                    otpInputs[0].focus();
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Network error.");
+                btn.innerHTML = 'Verify & Login';
+                btn.disabled = false;
+            }
+        }
+    </script>
+    <style>
+    .slide-in-bottom {
+        animation: slide-in-bottom 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    }
+    @keyframes slide-in-bottom {
+      0% { transform: translateY(30px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    .form-control:focus {
+        box-shadow: none;
+        background-color: #fff !important;
+        border: 1px solid #cf9b3e !important;
+    }
+    </style>
 </div>
 
 </body>
