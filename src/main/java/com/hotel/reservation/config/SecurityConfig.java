@@ -23,7 +23,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/rooms", "/rooms/{id}", "/rooms/search",
-                    "/about", "/contact", "/register", "/demo/**",
+                    "/about", "/contact", "/register", "/demo/**", "/auth/api/**", "/manifest.json",
                     "/css/**", "/js/**", "/images/**", "/webjars/**",
                     "/h2-console/**").permitAll()
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .permitAll()
             )
             .csrf(csrf -> csrf
-                .ignoringRequestMatchers("/h2-console/**")
+                .ignoringRequestMatchers("/h2-console/**", "/auth/api/**", "/demo/otp-login")
             )
             .headers(headers -> headers
                 .frameOptions(frame -> frame.sameOrigin())
